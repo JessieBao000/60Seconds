@@ -8,9 +8,9 @@ Knife,0,10,3,7
 Flashlights,0,7,0,3 
 Radio,0,10,0,8 
 Gasoline,0,8,4,0 
-Soap,0,1,10,3 
+Soap,1,1,10,3 
 Map,0,2,0,5 
 Gloves,0,5,4,0 
 FamilyPhotos,0,0,0,7 
 Generator,0,2,0,0 
-BoyScoutBook,1,4,4,5 
+BoyScoutBook,3,4,4,5 

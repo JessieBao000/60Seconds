@@ -9,7 +9,7 @@ import java.net.URL;
 
 public class Map {
 
-	private Image living, garage, stewie, attic, kitchen; 
+	private Image living, garage, stewie, attic, kitchen, black; 
 	private AffineTransform tx, tx2;
 	
 	public int dir=0;
@@ -28,6 +28,7 @@ public class Map {
 		stewie 	= getImage("/imgs/"+"stewie.png"); 
 		attic 	= getImage("/imgs/"+"houseattic.PNG"); 
 		kitchen 	= getImage("/imgs/"+"kitchen.png"); 
+		black = getImage("/imgs/"+"black.jpg");
 		width = 900;
 		height = 600;
 		x = 0;
@@ -78,7 +79,13 @@ public class Map {
 				g2.drawImage(kitchen, tx, null);
 				g.drawRect(x, y, width, height);
 				break;
-			case 5: //closing
+			case 5:
+				x = -900;
+				init(x, y); 
+				g2.drawImage(black, tx, null);
+				g.drawRect(x, y, width, height);
+				break;
+			case 6: //closing
 				init(x,y);
 
 				break;

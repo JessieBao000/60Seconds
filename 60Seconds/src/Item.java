@@ -13,6 +13,7 @@ public class Item implements MouseListener{
 
 	private Image soup,water,aid,shelter,cloth,knife,flashlight,
 	 				radio,gas,soap,map,gloves,family,generator,book; 
+	private String name;
 	private AffineTransform tx, tx2,tx3;
 	private Image glow;
 	public int dir=0;
@@ -73,13 +74,13 @@ public class Item implements MouseListener{
 					width = 60;
 					height = 100;
 					
-					g2.drawRect(x, y, width, height);
 					if (mouseOver) {
 						init(x-70,y-50);
 			            g2.drawImage(glow, tx, null); 
 			        }
 					init2(x,y);
 					g2.drawImage(soup, tx2, null);
+					name = "food";
 				}
 				break;
 			case 1:
@@ -95,7 +96,7 @@ public class Item implements MouseListener{
 					init2(x,y);
 					
 					g2.drawImage(water, tx2, null);
-					g2.drawRect(x, y, width, height);
+					name = "water";
 				}
 				break;
 			case 2:
@@ -110,7 +111,7 @@ public class Item implements MouseListener{
 			        }
 					init2(x,y);
 					g2.drawImage(aid, tx2, null);
-					g2.drawRect(x, y, width, height);
+					name = "firstaidkit";
 				}
 				break;
 			case 3:
@@ -130,8 +131,7 @@ public class Item implements MouseListener{
 			        }
 					init2(x,y);
 					g2.drawImage(cloth, tx2, null);
-					g2.drawRect(x, y, width, height);
-					
+					name = "clothing";
 				}
 				break;
 			case 5:
@@ -146,8 +146,7 @@ public class Item implements MouseListener{
 			        }
 					init2(x,y);
 					g2.drawImage(knife, tx2, null);
-					g2.drawRect(x, y, width, height);
-					
+					name = "knife";
 				}
 				break;
 			case 6:
@@ -162,8 +161,7 @@ public class Item implements MouseListener{
 			        }
 					init2(x,y);
 					g2.drawImage(flashlight, tx2, null);
-					g2.drawRect(x, y, width, height);
-					
+					name = "flashlights";
 				}
 				break;
 			case 7:
@@ -178,8 +176,7 @@ public class Item implements MouseListener{
 			        }
 					init2(x,y);
 					g2.drawImage(radio, tx2, null);
-					g2.drawRect(x, y, width, height);
-					
+					name = "radio";
 				}
 				break;
 			case 8:
@@ -194,8 +191,7 @@ public class Item implements MouseListener{
 			        }
 					init2(x,y);
 					g2.drawImage(gas, tx2, null);
-					g2.drawRect(x, y, width, height);
-				
+					name = "gasoline";
 				}
 				break;
 			case 9:
@@ -210,8 +206,7 @@ public class Item implements MouseListener{
 			        }
 					init2(x,y);
 					g2.drawImage(soap, tx2, null);
-					g2.drawRect(x, y, width, height);
-					
+					name = "soap";
 				}
 				break;
 			case 10:
@@ -226,8 +221,7 @@ public class Item implements MouseListener{
 			        }
 					init(x,y);
 					g2.drawImage(map, tx, null);
-					g2.drawRect(x, y, width, height);
-					
+					name = "map";
 				}
 				break;
 			case 11:
@@ -242,8 +236,7 @@ public class Item implements MouseListener{
 			        }
 					init2(x,y);
 					g2.drawImage(gloves, tx2, null);
-					g2.drawRect(x, y, width, height);
-					
+					name = "gloves";
 				}
 				break;
 			case 12:
@@ -258,8 +251,7 @@ public class Item implements MouseListener{
 			        }
 					init2(x,y);
 					g2.drawImage(family, tx2, null);
-					g2.drawRect(x, y, width, height);
-					
+					name = "familyphotos";
 				}
 				break;
 			case 13:
@@ -274,8 +266,7 @@ public class Item implements MouseListener{
 			        }
 					init(x,y);
 					g2.drawImage(generator, tx, null);
-					g2.drawRect(x, y, width, height);
-					
+					name = "generator";
 				}
 				break;
 			case 14:
@@ -290,8 +281,7 @@ public class Item implements MouseListener{
 			        }
 					init2(x,y);
 					g2.drawImage(book, tx2, null);
-					g2.drawRect(x, y, width, height);
-					
+					name = "boyscoutbook";
 				}
 				break;
 			
@@ -301,6 +291,14 @@ public class Item implements MouseListener{
 
 	}
 	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	private void init(double a, double b) {
 		tx.setToTranslation(a, b);
 		tx.scale(scaleWidth, scaleHeight);
@@ -401,7 +399,6 @@ public class Item implements MouseListener{
 
     public void setMouseOver(boolean mouseOver) {
         this.mouseOver = mouseOver;
-        System.out.println("mouse over");
     }
 }
 

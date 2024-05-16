@@ -28,20 +28,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 public class Frame extends JPanel implements ActionListener, MouseListener, MouseMotionListener, KeyListener {
-//<<<<<<< HEAD
 	
 	
 	
 	Map map;
-//<<<<<<< HEAD
-	
-//=======
-	//Clock clock;
-
-//>>>>>>> branch 'master' of https://github.com/JessieBao000/AP-CSA-Final.git
 	static String state = "California";
 	
 	static HashMap dangers = new HashMap<String, State>();
@@ -55,10 +49,12 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 	ArrayList<Item> inventory = new ArrayList<Item>();
 	String inventoryString = "Inventory: 0/10";
 	static Timer tick;
-	static int sec = 60;
+	static int sec = 5;
 	int xx = 330,xy= 300,xw = 200,xh= 80; //restart button vals
+	
+	//scores
+	int hunger=0,  saftey=0, health=0, sanity=0;
 
-	//Clock clock = new Clock();
 
 	public void paint(Graphics g) {
 		super.paintComponent(g);
@@ -66,7 +62,6 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 		
 		//clock.paint(g);
 
-//<<<<<<< HEAD
 		
 		//living
 		if(map.getDir()==0) {
@@ -76,12 +71,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 		//garage
 		if(map.getDir()==1) {
 			items[2].paint(g);
-//<<<<<<< HEAD
 			items[8].paint(g);
 			items[13].paint(g);
-//=======
-			
-//>>>>>>> branch 'master' of https://github.com/JessieBao000/AP-CSA-Final.git
 		}
 		//stewie
 		if(map.getDir()==2) {
@@ -103,7 +94,6 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 		}
 
 		
-//<<<<<<< HEAD
 		
 		Font myFont = new Font ("Courier New", 1, 50);
 		g.setFont (myFont);
@@ -129,26 +119,9 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 //wi, he
 		}
  
-//>>>>>>> branch 'master' of https://github.com/JessieBao000/AP-CSA-Final.git
 	    
 
-				
-		
-//=======
-//<<<<<<< HEAD
-		//clock.paint(g);
-//=======
-//>>>>>>> branch 'master' of https://github.com/JessieBao000/AP-CSA-Final.git
-
-//>>>>>>> branch 'master' of https://github.com/JessieBao000/AP-CSA-Final.git
 	}
-//<<<<<<< HEAD
-	
-//		public static void main(String[] arg) {
-		
-		
-//=======
-	
 	
 	
 	public static void main(String[] arg) throws Exception{
@@ -156,7 +129,6 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 		
 	        
 
-//>>>>>>> branch 'master' of https://github.com/JessieBao000/AP-CSA-Final.git
 		try {
 			
 			 ActionListener taskPerformer = new ActionListener() {
@@ -168,13 +140,6 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 		            }
 		            			 
 			 };
-			 
-			// tick = new Timer(1000, taskPerformer);
-		//    tick.start();
-		    
-		    	
-		
-	
 	    
 	    
 	    
@@ -307,7 +272,6 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 		addMouseMotionListener(this);
 
 
-//<<<<<<< HEAD
 		map = new Map();
 		items = new Item[15];
 		for(int i =0; i<items.length;i++) {
@@ -315,21 +279,14 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 			a.setDir(i);
 			items[i] = a;
 		}
-//=======
-//>>>>>>> branch 'master' of https://github.com/JessieBao000/AP-CSA-Final.git
 
 		map = new Map();
 
-//<<<<<<< HEAD
 
-//=======
 		statePopup();
 		
 		openPopup();
-		
-//>>>>>>> branch 'master' of https://github.com/JessieBao000/AP-CSA-Final.git
-//		
-		
+	
 		//backgroundMusic.play();
 
 	
@@ -349,35 +306,41 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 	}
 	
 
-//=======
 	public void statePopup() {
-        // Show input dialog with a message and default value
-        String userInput = JOptionPane.showInputDialog(
-            null, 
-            "Enter a United State:", 
-            "User Input", 
-            JOptionPane.QUESTION_MESSAGE
-        );
-		while ((userInput.equals(null) )|| userInput.isEmpty() || !dangers.containsKey(state)) {
-       		
-            System.out.println("Enter in a new state");
-                   
-            userInput = JOptionPane.showInputDialog(
-                     null, 
-                     "Enter a valid United State", 
-                     "User Input", 
-                     JOptionPane.QUESTION_MESSAGE
-                );
-            
-           state = userInput.toLowerCase();
-    		state = userInput.replace(" ", "");
-           
-       } 
-       
-       State temp = (State)(dangers.get(state));
-  		System.out.println(state + temp.getEarthquake() + " " + temp.getVolcano() + " "+ temp.getBomb());
-  		state = temp.getState();
-    }
+	       // Show input dialog with a message and default value
+	       String userInput = JOptionPane.showInputDialog(
+	           null,
+	           "Enter a United State:",
+	           "User Input",
+	           JOptionPane.QUESTION_MESSAGE
+	       );
+	      
+	      
+			String tempstate = userInput.replace(" ", "");
+			state = tempstate.toLowerCase();
+			System.out.println("looks like "+ state);
+	       // If user input is not null and not empty, display it
+	       while ((userInput.equals(null) )|| userInput.isEmpty() || !dangers.containsKey(state)) {
+	          		
+	            System.out.println("Enter in a new state");
+	                  
+	            userInput = JOptionPane.showInputDialog(
+	                     null,
+	                     "Enter a valid United State",
+	                     "User Input",
+	                     JOptionPane.QUESTION_MESSAGE
+	                );
+	           
+	           state = userInput.toLowerCase();
+	    		state = userInput.replace(" ", "");
+	          
+	       }
+	      
+	       State temp = (State)(dangers.get(state));
+	  		System.out.println(state + temp.getEarthquake() + " " + temp.getVolcano() + " "+ temp.getBomb());
+	  		state = temp.getState();
+	   }
+
 	
 
 	
@@ -390,26 +353,29 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 		                                                      0, 3, null, options, options[0]);
 		    if (selection == 0) {
 		      disaster = 1;
+		      disaster = ((State)dangers.get(state)).getEarthquake();
 		    }
 		    if (selection == 1) { 
 		    	disaster = 2;
+		    	disaster = ((State)dangers.get(state)).getVolcano();
 		    }
 		    if (selection == 2) { 
 		    	disaster = 3;
+		    	disaster = ((State)dangers.get(state)).getBomb();
 		  }
 		    
 		    if (selection >= 0) {
-	            disaster = selection + 1; // Adjust the disaster variable accordingly
+	            
 	            ActionListener taskPerformer = new ActionListener() {
 	                public void actionPerformed(ActionEvent evt) {
 	                	if (sec == 0) {
 	        	            System.out.println("complete");
 	        	            tick.stop();
 	        	            map.dir = 5;
-	        	            // Add any additional actions upon completion of the timer
-	        	        } else {
-	        	            sec--; // Decrease by one every second
-	        	            repaint(); // Update the display every second
+	        	            
+	                	} else {
+	        	            sec--; 
+	        	            repaint(); 
 	        	        }
 	                }
 	            };
@@ -418,6 +384,28 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 	        }
     }
 	
+	
+	
+	public void basePopup() {
+        
+		 String[] options = { "Okay" };
+		    int selection = JOptionPane.showOptionDialog(null, "Food/Thirst Score: "+round(((hunger/24.0)*100),2) + "%"+"\n"+ "Saftey Score: " +round(( (saftey/49.0)*100),2)  + "%"+"\n"
+		    												+ "Health Score: " + round(((health/53.0)*100),2) + "%"+"\n"+"Sanity Score: " + round(((sanity/55.0)*100),2) + "%"+"\n" , "Times Up!", 
+		                                                      0, 1, null, options, options[0]);
+		    
+		    
+		    if (selection >= 0) {
+		    	 /*
+	             * 	OPEN NEW FRAME
+	             */
+		        Base b = new Base(disaster, inventory);
+
+		        f.dispose();
+		        repaint();
+
+		    }
+			
+    }
 	
 	 
 
@@ -432,6 +420,11 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 					
 				if(inventory.size()<10) {
 					inventory.add(items[i]);
+					ItemsInfo temp = (ItemsInfo)itemsList.get(items[i].getName());
+					hunger+= temp.getHunger();
+					health+=temp.getHealth();
+					saftey+=temp.getSaftey();
+					sanity+=temp.getSanity();
 					items[i].setX(1000);;
 					inventoryString = "Inventory: "+inventory.size()+"/10";
 					repaint();
@@ -444,7 +437,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 
 		if(map.getDir()==5) {//Restart button
 			if(((m.getX() >= (double)xx) && (m.getX() <= (double)(xx+xw))) && ((m.getY() >= (double)xy) && (m.getY() < (double)xy+xh))) {
-			f.dispose();
+				//basePopup();
+				f.dispose();
 			}
 			
 
@@ -466,36 +460,6 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 			}
 		}
 		
-	/*	//living
-				if(map.getDir()==0) {
-					items[7].paint(g);
-					items[12].paint(g);
-				}
-				//garage
-				if(map.getDir()==1) {
-					items[2].paint(g);
-					items[8].paint(g);
-					items[13].paint(g);
-				}
-				//stewie
-				if(map.getDir()==2) {
-					items[4].paint(g);
-					items[14].paint(g);
-				}
-				//attic
-				if(map.getDir()==3) {
-					items[6].paint(g);
-					items[10].paint(g);
-					items[11].paint(g);
-				}
-				//kitchen
-				if(map.getDir()==4) {
-					items[0].paint(g);
-					items[1].paint(g);
-					items[5].paint(g);
-					items[9].paint(g);
-				}
-		*/
 	}
 
 	@Override
@@ -545,7 +509,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-		repaint();
+	    repaint();
+
 	}
 
 	@Override
@@ -611,7 +576,14 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 	    }
 	 
 	 
-	
+	 public static double round(double value, int places) {
+		    if (places < 0) throw new IllegalArgumentException();
+
+		    long factor = (long) Math.pow(10, places);
+		    value = value * factor;
+		    long tmp = Math.round(value);
+		    return (double) tmp / factor;
+		}
 	
 	 
 	
