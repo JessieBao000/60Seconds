@@ -437,8 +437,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 
 		if(map.getDir()==5) {//Restart button
 			if(((m.getX() >= (double)xx) && (m.getX() <= (double)(xx+xw))) && ((m.getY() >= (double)xy) && (m.getY() < (double)xy+xh))) {
-				//basePopup();
-				f.dispose();
+				basePopup();
+				//f.dispose();
 			}
 			
 

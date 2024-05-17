@@ -10,12 +10,13 @@ import java.net.URL;
 public class Map {
 
 	private Image living, garage, stewie, attic, kitchen, black; 
-	private AffineTransform tx, tx2;
+	private AffineTransform tx, tx2,txn;
 	
 	public int dir=0;
 	public int maxDir=4;
 	int width, height;
-	int x, y;				
+	int x, y, vx, vy, ax;	
+	double scaleNormal=1;
 	double scaleWidth = 0.75;		
 	double scaleHeight = 0.75;
 	double scaleWidth2 = 0.6;		
@@ -33,9 +34,12 @@ public class Map {
 		height = 600;
 		x = 0;
 		y = 0;
-		
+		vx=0;
+		vy=0;
+		ax=0;
 		tx = AffineTransform.getTranslateInstance(0, 0);
 		tx2 = AffineTransform.getTranslateInstance(0, 0);
+		txn = AffineTransform.getTranslateInstance(0, 0);
 		
 		//init(x, y); 
 		
@@ -47,7 +51,6 @@ public class Map {
 
 		g.drawRect(x, y, width, height);
 
-	//init(x,y);
 		
 		switch(dir) {
 			case 0:
@@ -80,9 +83,9 @@ public class Map {
 				g.drawRect(x, y, width, height);
 				break;
 			case 5:
-				x = -900;
-				init(x, y); 
-				g2.drawImage(black, tx, null);
+				
+				initn(x, y); 
+				g2.drawImage(black, txn, null);
 				g.drawRect(x, y, width, height);
 				break;
 			case 6: //closing
@@ -96,6 +99,46 @@ public class Map {
 
 	}
 	
+	public int getVx() {
+		return vx;
+	}
+
+	public void setVx(int vx) {
+		this.vx = vx;
+	}
+
+	public int getVy() {
+		return vy;
+	}
+
+	public void setVy(int vy) {
+		this.vy = vy;
+	}
+
+	public int getAx() {
+		return ax;
+	}
+
+	public void setAx(int ax) {
+		this.ax = ax;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
 	private void init(double a, double b) {
 		tx.setToTranslation(a, b);
 		tx.scale(scaleWidth, scaleHeight);
@@ -105,6 +148,11 @@ public class Map {
 	private void init2(double a, double b) {
 		tx2.setToTranslation(a, b);
 		tx2.scale(scaleWidth2, scaleHeight2);
+	}
+	
+	private void initn(double a, double b) {
+		txn.setToTranslation(a, b);
+		txn.scale(scaleNormal, scaleNormal);
 	}
 
 	

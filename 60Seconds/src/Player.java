@@ -22,6 +22,8 @@ public class Player {
 	double scaleWidth2 = 0.6;		
 	double scaleHeight2 = 0.6;
 	
+	int hungerScore, mentalScore, healthScore, illScore;
+	
 	public Player() {
 		
 		normal 	= getImage("/imgs/"+"yipee.jpg"); 
@@ -29,14 +31,18 @@ public class Player {
 		hunger 	= getImage("/imgs/"+"stewie.png"); 
 		hurt 	= getImage("/imgs/"+"houseattic.PNG"); 
 		sick 	= getImage("/imgs/"+"ashbaby.jpg"); 
-		width = 900;
-		height = 600;
+		width = 200;
+		height = 200;
 		x = 0;
 		y = 0;
 		
 		tx = AffineTransform.getTranslateInstance(0, 0);
 		tx2 = AffineTransform.getTranslateInstance(0, 0);
 		
+		hungerScore=100;
+		mentalScore=100;
+		healthScore=100;
+		illScore=100;
 		//init(x, y); 
 		
 	}
@@ -47,8 +53,6 @@ public class Player {
 
 		g.drawRect(x, y, width, height);
 
-	//init(x,y);
-		
 		switch(dir) {
 			case 0:
 				init2(x,y);
@@ -64,19 +68,19 @@ public class Player {
 				
 			case 2:
 				init(x, y); 
-				g2.drawImage(hunger, tx, null);
+				g2.drawImage(hunger, tx2, null);
 				g.drawRect(x, y, width, height);
 				break;
 				
 			case 3:
 				init(x, y);  
-				g2.drawImage(sick, tx, null);
+				g2.drawImage(sick, tx2, null);
 				g.drawRect(x, y, width, height);
 				break;
 				
 			case 4:
 				init(x, y); 
-				g2.drawImage(hurt, tx, null);
+				g2.drawImage(hurt, tx2, null);
 				g.drawRect(x, y, width, height);
 				break;
 			case 5: //closing
@@ -114,7 +118,39 @@ public class Player {
 	}
 	
 	
-	
+
+
+	public int getHungerScore() {
+		return hungerScore;
+	}
+
+	public void setHungerScore(int hungerScore) {
+		this.hungerScore = hungerScore;
+	}
+
+	public int getMentalScore() {
+		return mentalScore;
+	}
+
+	public void setMentalScore(int mentalScore) {
+		this.mentalScore = mentalScore;
+	}
+
+	public int getHealthScore() {
+		return healthScore;
+	}
+
+	public void setHealthScore(int healthScore) {
+		this.healthScore = healthScore;
+	}
+
+	public int getIllScore() {
+		return illScore;
+	}
+
+	public void setIllScore(int illScore) {
+		this.illScore = illScore;
+	}
 	
 	
 	public int getDir() {
@@ -130,5 +166,8 @@ public class Player {
 		
 		//Player f = new Player();
 	}
+	
+	
+	
 
 }
