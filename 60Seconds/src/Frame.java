@@ -49,9 +49,9 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 	ArrayList<Item> inventory = new ArrayList<Item>();
 	String inventoryString = "Inventory: 0/10";
 	static Timer tick;
-	static int sec = 5;
-	int xx = 330,xy= 300,xw = 200,xh= 80; //restart button vals
-	
+	static int sec = 1;
+	int xx = 600,xy= 100,xw = 250,xh= 80; //restart button vals
+	int o1 =300;
 	//scores
 	int hunger=0,  saftey=0, health=0, sanity=0;
 
@@ -107,15 +107,28 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
     	//END Screen
 		if(map.getDir()==5) {
 			g.setColor(Color.black);
+			
+			//Continue Button
 	        g.fillRect(0,0,1000,1000);
 			g.setColor(Color.pink);
-	        g.drawString("you" + "won/lost", 390, 50);
-	        g.fillRect(xx,xy,xw,xh);
-			Font myf = new Font ("Courier New", 6, 30);
+	        g.fillRect(xx,xy,xw-75,xh);
+			Font myf = new Font ("Serif Bold Italic", 6, 30);
 			g.setFont (myf);
 			g.setColor(Color.white);
-	        g.drawString("try again?" , 350, 340);
+	        g.drawString("CONTINUE?" , xx, xy+50);
+	        
 
+			g.setColor(Color.green);
+	        g.fillRect(xx,o1,xw,xh);
+			Font myf2 = new Font ("Serif Bold Italic", 6, 30);
+			g.setFont (myf2);
+			g.setColor(Color.white);
+
+	        g.drawString("RESTART GAME?" , xx, o1+50);
+
+
+	        //Resart Button
+	        
 //wi, he
 		}
  
@@ -253,7 +266,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 		
 	Frame f = new Frame();	
 			
-			
+				
+
 
 	 }
 	
@@ -438,13 +452,16 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 		if(map.getDir()==5) {//Restart button
 			if(((m.getX() >= (double)xx) && (m.getX() <= (double)(xx+xw))) && ((m.getY() >= (double)xy) && (m.getY() < (double)xy+xh))) {
 				basePopup();
-				//f.dispose();
 			}
 			
-
+			if(((m.getX() >= (double)xx) && (m.getX() <= (double)(xx+xw))) && ((m.getY() >= (double)o1) && (m.getY() < (double)o1+xh))) {
+			f.dispose();
+			statePopup();
 			}
-			
 		}
+			
+		}	
+
 			
 		
 		
