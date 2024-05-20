@@ -362,7 +362,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 	public void openPopup() {
         // Show input dialog with a message and default value
 		    /* Simple JOptionPane ShowOptionDialogJava example */    
-		    String[] options = { "Earthquake", "Volcano", "Bomb" };
+		    String[] options = { "Earthquake", "Volcano", "Bomb", "Random" };
 		    int selection = JOptionPane.showOptionDialog(null, "You have 60 seconds to gather supplies before a disaster, which one will happen?", "Disaster Struck!", 
 		                                                      0, 3, null, options, options[0]);
 		    if (selection == 0) {
@@ -377,6 +377,18 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 		    	disaster = 3;
 		    	disaster = ((State)dangers.get(state)).getBomb();
 		  }
+		    if(selection == 3) {
+		    	int i = (int) (Math.random()*2);
+		    	if(i == 0) {
+		    		disaster = 1;
+				      disaster = ((State)dangers.get(state)).getEarthquake();		    	}
+		    	if (i == 1) { 
+			    	disaster = 2;
+			    	disaster = ((State)dangers.get(state)).getVolcano(); }
+		    	if (i == 2) { 
+			    	disaster = 3;
+			    	disaster = ((State)dangers.get(state)).getBomb(); }
+		    }
 		    
 		    if (selection >= 0) {
 	            
