@@ -7,10 +7,11 @@ import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.net.URL;
 
-public class Map {
+public class Event {
 
 	private Image living, garage, stewie, attic, kitchen, black; 
 	private AffineTransform tx, tx2,txn;
+	String dialog = "peepee poopoo caca";
 	
 	public int dir=0;
 	public int maxDir=4;
@@ -22,7 +23,7 @@ public class Map {
 	double scaleWidth2 = 0.6;		
 	double scaleHeight2 = 0.6;
 	
-	public Map() {
+	public Event() {
 		
 		living 	= getImage("/imgs/"+"familyguyroom.PNG"); 
 		garage 	= getImage("/imgs/"+"garage.PNG"); 
@@ -159,7 +160,7 @@ public class Map {
 	private Image getImage(String path) {
 		Image tempImage = null;
 		try {
-			URL imageURL = Map.class.getResource(path);
+			URL imageURL = Event.class.getResource(path);
 			tempImage = Toolkit.getDefaultToolkit().getImage(imageURL);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -182,7 +183,7 @@ public class Map {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		//Map f = new Map();
+		//Event f = new Event();
 	}
 
 }

@@ -37,6 +37,7 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 	Map map= new Map();;
 	
 	int day = 1;
+	String dayText;
 	JButton button;
 	static int disaster = 0;
 	Player player = new Player();
@@ -52,17 +53,19 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 	public void paint(Graphics g) {
 		super.paintComponent(g);
 		
-		//player.dir=3;
-		//player.paint(g);
-		map.dir=5;
+		player.paint(g);
 		map.paint(g);
 		
 		
 		
 		Font myFont = new Font ("Courier New", 1, 50);
+		Font funFont = new Font ("SansSerif", 1, 25);
 		g.setFont (myFont);
 		g.setColor(Color.red);
-    	g.drawString("Day "+day, 390, 50);
+    	g.drawString(dayText, 390, 50);
+    	
+    	
+    	
 		}
  
 	
@@ -96,7 +99,9 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 		inventory = i;
 		
 		map.x=-1000;
-		 
+		dayText = "Day: " +day;
+		player.dir=0;
+		map.dir=6;
 		
 		
 		
@@ -132,44 +137,32 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 		
 		System.out.println(map.x);
 		map.setVx(0);
-		map.setAx(0);
 		map.x=0;
-		time = false;
-		if(!time) {
+		dayText = "";
+ 		repaint();
 			 ActionListener taskPerformer = new ActionListener() {
 	             public void actionPerformed(ActionEvent evt) {
 	             	if (sec == 0) {
 	             		System.out.println("time stop");
-	     	            time = true;
 	     	            tick.stop();
-	     	            
-	     	           while(time && map.getX()<= 1000) {
-		     	  			map.setVx(1);
-		     	  			map.setX(map.getX()+map.getVx());
-		     	  			map.paint(getGraphics());
-		     	  			repaint();
-		     	  			
-		     	  			System.out.println(map.x);
-	     	           	}
-	     	           updateDay(3,3,3,3);
-		     	  		map.setVx(0);
-		     	  		map.setAx(0);
 		     	  		map.setX(-1000);
-		     	  		time = false;
+		     	  		updateDay(10,10,10,10);
 	             	} else {
 	             		System.out.println("time go");
+	             		dayText = "";
+	             		repaint();
 	     	            sec--; 
 	     	        }
 	             }
 	         };
 	         tick = new Timer(1000, taskPerformer);
 	         tick.start();
-		}
 	}
 	
 	
 	public void updateDay(int hunger, int sick, int health, int sanity) {
 		day+=1;
+		dayText = "Day: "+day;
 		if(day%5==0) {
 			sanityIncrease+=3;
 			sanity+=sanityIncrease;
@@ -185,9 +178,48 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 		player.setHealthScore(player.getHealthScore()-health);
 		player.setMentalScore(player.getMentalScore()-sanity);
 		
+		int hun = player.getHungerScore();
+		int ill = player.getIllScore();
+		int hurt = player.getHealthScore();
+		int mental = player.getMentalScore();
 		
-		repaint();
+		int [] numbers = {hun, ill, hurt, mental};
+		int smallest = numbers[0];
+		int index = 0;
+		for(int i=0;i<numbers.length;i++){
+		   if (numbers[i] < smallest) {
+		      smallest = numbers[i];
+		      index=i;
+		   }
+		}
+		
+		if(hun>=70 && ill>=70 && hurt>=70 && mental>=70) {
+			player.dir=0;
+			return;
+		}
+		
+		if(index==0) {
+			player.dir=2;
+		}else if(index==1) {
+			player.dir=3;
+		}else if(index==2) {
+			player.dir=4;
+		}else if(index==3) {
+			player.dir=1;
+		}
+		
 	}
+	
+	public void openStats() {
+		ImageIcon happy = new ImageIcon("happyhappyhappy.jpg");
+        
+		JOptionPane.showMessageDialog(null, "Hunger/Thirst: "+ player.getHungerScore() + "%"+"\n" + "Injury: " + player.getHealthScore() + "%"+"\n" 
+										+"Illness: "+player.getIllScore()+  "%"+"\n" + "Sanity: "+player.getMentalScore() + "%"+"\n",
+	             "Stats", JOptionPane.INFORMATION_MESSAGE, happy);
+		    
+		    
+			
+   }
 	
 	
 	public void moveBack() {
@@ -259,11 +291,15 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 		//87-w 65-a 83-s 68-d
 		//37-left 38-up  39-right 40-down  
 		//89-y  78-n
+		//67-c
+		
 		
 		switch(k.getKeyCode()){
 			case 78:
 				newDay();
-				System.out.println("n pressed");
+				break;
+			case 67:
+				openStats();
 				break;
 		}
 		
