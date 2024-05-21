@@ -3,6 +3,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -12,8 +13,10 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -43,7 +46,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 	JFrame f = new JFrame("60 Seconds");
 
 	int disaster = 0;
-	
+	Image img;
     Item[] items;
 	Item test;
 	ArrayList<Item> inventory = new ArrayList<Item>();
@@ -106,10 +109,14 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 
     	//END Screen
 		if(map.getDir()==5) {
+			int i = 3;
+			//(int)Math.random()*18
+			img = getImage("/imgs/"+ "3" +".jfif");
 			g.setColor(Color.black);
-			
+			//Integer.toString(i)
 			//Continue Button
-	        g.fillRect(0,0,1000,1000);
+			//g.drawImage(img, , null );
+			g.fillRect(0,0,1000,1000);
 			g.setColor(Color.pink);
 	        g.fillRect(xx,xy,xw-75,xh);
 			Font myf = new Font ("Serif Bold Italic", 6, 30);
@@ -172,7 +179,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 				
 				for(int i = 0; i<4;i++) {
 					
-					if(i==0) {
+					if (i==0) {
 						s = arr[i].trim();
 						s = s.toLowerCase();
 						state = s;
@@ -588,6 +595,16 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 		
 	}
 	
+	private Image getImage(String path) {
+		Image tempImage = null;
+		try {
+			URL imageURL = Map.class.getResource(path);
+			tempImage = Toolkit.getDefaultToolkit().getImage(imageURL);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return tempImage;
+	}
 	
 	 public static void playSound(String soundFilePath) {
 	        try {
