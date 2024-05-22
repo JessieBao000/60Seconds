@@ -1,166 +1,365 @@
-import java.awt.Color;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;
 import java.net.URL;
 
-public class Event {
+import javax.swing.JOptionPane;
 
-	private Image living, garage, stewie, attic, kitchen, black; 
-	private AffineTransform tx, tx2,txn;
-	String dialog = "peepee poopoo caca";
-	
+public class Event implements MouseListener{
+
+	private Image soup,water,aid,shelter,cloth,knife,flashlight,
+	 				radio,gas,soap,map,gloves,family,generator,book, notebook, arrow; 
+	private String name;
+	private AffineTransform tx, tx2,tx3;
+	private Image glow;
 	public int dir=0;
-	public int maxDir=4;
+	public int maxDir=15;
 	int width, height;
-	int x, y, vx, vy, ax;	
-	double scaleNormal=1;
-	double scaleWidth = 0.75;		
-	double scaleHeight = 0.75;
-	double scaleWidth2 = 0.6;		
-	double scaleHeight2 = 0.6;
+	int x, y,arrowX,arrowY, itemX, itemY, item2X, item2Y;				
+	double scaleWidth = 0.3;		
+	double scaleHeight = 0.3;
+	double scaleWidth2 = 0.2;		
+	double scaleHeight2 = 0.2;
+	private boolean mouseOver = false;
+	private String text="Would you like to use any materials today? (Press C for Char stats)";
+	Player player;
 	
-	public Event() {
+	public Event(Player player) {
 		
-		living 	= getImage("/imgs/"+"familyguyroom.PNG"); 
-		garage 	= getImage("/imgs/"+"garage.PNG"); 
-		stewie 	= getImage("/imgs/"+"stewie.png"); 
-		attic 	= getImage("/imgs/"+"houseattic.PNG"); 
-		kitchen 	= getImage("/imgs/"+"kitchen.png"); 
-		black = getImage("/imgs/"+"black.jpg");
-		width = 900;
-		height = 600;
-		x = 0;
+		this.player = player;
+		
+		soup 	= getImage("/imgs/"+"campbell.png"); 
+		water 	= getImage("/imgs/"+"water.png"); 
+		aid 	= getImage("/imgs/"+"aid.png"); 
+		shelter = getImage("/imgs/"+"water.png"); 
+		cloth 	= getImage("/imgs/"+"cloth.png"); 
+		knife 	= getImage("/imgs/"+"knife.png"); 
+		flashlight 	= getImage("/imgs/"+"flashlight.png"); 
+		radio 	= getImage("/imgs/"+"radio.png"); 
+		gas 	= getImage("/imgs/"+"gas.png"); 
+		soap 	= getImage("/imgs/"+"soap.png"); 
+		map 	= getImage("/imgs/"+"map.png"); 
+		gloves 	= getImage("/imgs/"+"gloves.png"); 
+		family 	= getImage("/imgs/"+"cat.png"); 
+		generator 	= getImage("/imgs/"+"generator.png"); 
+		book 	= getImage("/imgs/"+"book.png"); 
+		glow = getImage("/imgs/"+"glow.png");
+		notebook = getImage("/imgs/"+"notebook.png");
+		arrow = getImage("/imgs/"+"arrow.png");
+		
+		width = 100;
+		height = 100;
+		x = 500;
 		y = 0;
-		vx=0;
-		vy=0;
-		ax=0;
+		arrowX = 700;
+		arrowY = 480;
+		itemX = 250;
+		itemY = 400;
+		
+		
 		tx = AffineTransform.getTranslateInstance(0, 0);
 		tx2 = AffineTransform.getTranslateInstance(0, 0);
-		txn = AffineTransform.getTranslateInstance(0, 0);
+		tx3 = AffineTransform.getTranslateInstance(0, 0);
 		
 		//init(x, y); 
 		
 	}
 
+	public Player getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+
 	public void paint(Graphics g) {
 		//these are the 2 lines of code needed draw an image on the screen
 		Graphics2D g2 = (Graphics2D) g;
-
-		g.drawRect(x, y, width, height);
-
+		//init2(x,y);
+		g2.drawImage(notebook, 200, 0, 500,600, null);
+		g2.drawImage(arrow, arrowX, arrowY, arrow.getWidth(null), arrow.getHeight(null), null);
+		
 		
 		switch(dir) {
 			case 0:
-				init2(x,y);
-				g2.drawImage(living, tx2, null);
-				g.drawRect(x, y, width, height);
+				g2.drawString(text, 300, 100);
+				g2.drawImage(soup, itemX, itemY, 80, 110, null);
 				break;
-				
-			case 1:
-				init2(x,y);
-				g2.drawImage(garage, tx2, null);
-				g.drawRect(x, y, width, height);
-				break;
-				
-			case 2:
-				init(x, y); 
-				g2.drawImage(stewie, tx, null);
-				g.drawRect(x, y, width, height);
-				break;
-				
-			case 3:
-				init(x, y);  
-				g2.drawImage(attic, tx, null);
-				g.drawRect(x, y, width, height);
-				break;
-				
-			case 4:
-				init(x, y); 
-				g2.drawImage(kitchen, tx, null);
-				g.drawRect(x, y, width, height);
-				break;
-			case 5: //closing
-				init(x,y);
+		}
 
+		//g2.drawRect(x, y, width, height)
+		
+	/*	
+		switch(dir) {
+			case 0:
+				if(x!=1000) {
+					x = 120;
+					y = 190;
+					width = 60;
+					height = 100;
+					
+					if (mouseOver) {
+						init(x-70,y-50);
+			            g2.drawImage(glow, tx, null); 
+			        }
+					init2(x,y);
+					g2.drawImage(soup, tx2, null);
+					name = "food";
+				}
+				break;
+			case 1:
+				if(x!=1000) {
+					x = 200;
+					y = 300;
+					width = 50;
+					height = 130;
+					if (mouseOver) {
+						init(x-80,y-50);
+			            g2.drawImage(glow, tx, null); 
+			        }
+					init2(x,y);
+					
+					g2.drawImage(water, tx2, null);
+					name = "water";
+				}
+				break;
+			case 2:
+				if(x!=1000) {
+					x = 80;
+					y = 100;
+					width = 100;
+					height = 80;
+					if (mouseOver) {
+						init(x-40,y-50);
+			            g2.drawImage(glow, tx, null); 
+			        }
+					init2(x,y);
+					g2.drawImage(aid, tx2, null);
+					name = "firstaidkit";
+				}
+				break;
+			case 3:
+				init(x,y);
+				g2.drawImage(shelter, tx, null);
+				//g2.drawRect(x, y, width, height);
+				break;
+			case 4:
+				if(x!=1000) {
+					x = 530;
+					y = 380;
+					width = 100;
+					height = 60;
+					if (mouseOver) {
+						init(x-50,y-70);
+			            g2.drawImage(glow, tx, null); 
+			        }
+					init2(x,y);
+					g2.drawImage(cloth, tx2, null);
+					name = "clothing";
+				}
+				break;
+			case 5:
+				if(x!=1000) {
+					x = 470;
+					y = 300;
+					width = 100;
+					height = 50;
+					if (mouseOver) {
+						init(x-70,y-80);
+			            g2.drawImage(glow, tx, null); 
+			        }
+					init2(x,y);
+					g2.drawImage(knife, tx2, null);
+					name = "knife";
+				}
 				break;
 			case 6:
-				
-				initn(x, y); 
-				g2.drawImage(black, txn, null);
-				g.drawRect(x, y, width, height);
+				if(x!=1000) {
+					x = 550;
+					y = 500;
+					width = 100;
+					height = 50;
+					if (mouseOver) {
+						init(x-40,y-60);
+			            g2.drawImage(glow, tx, null); 
+			        }
+					init2(x,y);
+					g2.drawImage(flashlight, tx2, null);
+					name = "flashlights";
+				}
 				break;
-				
-		}
+			case 7:
+				if(x!=1000) {
+					x = 50;
+					y = 430;
+					width = 100;
+					height = 80;
+					if (mouseOver) {
+						init(x-40,y-50);
+			            g2.drawImage(glow, tx, null); 
+			        }
+					init2(x,y);
+					g2.drawImage(radio, tx2, null);
+					name = "radio";
+				}
+				break;
+			case 8:
+				if(x!=1000) {
+					x = 420;
+					y = 320;
+					width = 100;
+					height = 90;
+					if (mouseOver) {
+						init(x-30,y-50);
+			            g2.drawImage(glow, tx, null); 
+			        }
+					init2(x,y);
+					g2.drawImage(gas, tx2, null);
+					name = "gasoline";
+				}
+				break;
+			case 9:
+				if(x!=1000) {
+					x = 270;
+					y = 160;
+					width = 100;
+					height = 70;
+					if (mouseOver) {
+						init(x-50,y-50);
+			            g2.drawImage(glow, tx, null); 
+			        }
+					init2(x,y);
+					g2.drawImage(soap, tx2, null);
+					name = "soap";
+				}
+				break;
+			case 10:
+				if(x!=1000) {
+					x = 300;
+					y = 400;
+					width = 140;
+					height = 100;
+					if (mouseOver) {
+						init(x-30,y-50);
+			            g2.drawImage(glow, tx, null); 
+			        }
+					init(x,y);
+					g2.drawImage(map, tx, null);
+					name = "map";
+				}
+				break;
+			case 11:
+				if(x!=1000) {
+					x = 100;
+					y = 450;
+					width = 120;
+					height = 70;
+					if (mouseOver) {
+						init(x-40,y-50);
+			            g2.drawImage(glow, tx, null); 
+			        }
+					init2(x,y);
+					g2.drawImage(gloves, tx2, null);
+					name = "gloves";
+				}
+				break;
+			case 12:
+				if(x!=1000) {
+					x = 260;
+					y = 230;
+					width = 100;
+					height = 60;
+					if (mouseOver) {
+						init(x-40,y-60);
+			            g2.drawImage(glow, tx, null); 
+			        }
+					init2(x,y);
+					g2.drawImage(family, tx2, null);
+					name = "familyphotos";
+				}
+				break;
+			case 13:
+				if(x!=1000) {
+					x = 600;
+					y = 400;
+					width = 150;
+					height = 130;
+					if (mouseOver) {
+						init3(x-50,y-50);
+			            g2.drawImage(glow, tx3, null); 
+			        }
+					init(x,y);
+					g2.drawImage(generator, tx, null);
+					name = "generator";
+				}
+				break;
+			case 14:
+				if(x!=1000) {
+					x=170;
+					y = 400;
+					width = 100;
+					height = 80;
+					if (mouseOver) {
+						init(x-40,y-50);
+			            g2.drawImage(glow, tx, null); 
+			        }
+					init2(x,y);
+					g2.drawImage(book, tx2, null);
+					name = "boyscoutbook";
+				}
+				break;
+			
+		}*/
 		
 
 
 	}
 	
-	public int getVx() {
-		return vx;
+	public String getName() {
+		return name;
 	}
 
-	public void setVx(int vx) {
-		this.vx = vx;
-	}
-
-	public int getVy() {
-		return vy;
-	}
-
-	public void setVy(int vy) {
-		this.vy = vy;
-	}
-
-	public int getAx() {
-		return ax;
-	}
-
-	public void setAx(int ax) {
-		this.ax = ax;
-	}
-
-	public int getWidth() {
-		return width;
-	}
-
-	public void setWidth(int width) {
-		this.width = width;
-	}
-
-	public int getX() {
-		return x;
-	}
-
-	public void setX(int x) {
-		this.x = x;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	private void init(double a, double b) {
 		tx.setToTranslation(a, b);
-		tx.scale(scaleWidth, scaleHeight);
+		tx.scale(0.55, 0.55);
 	}
+	
+	public boolean collided(int x, int y, int width, int height) {
+		Rectangle otherObject = new Rectangle(x-15,y-20,width,height);
+		Rectangle thisObject = new Rectangle(this.x,this.y,this.width,this.height);
+		return otherObject.intersects(thisObject);
+	}
+	
 	
 	
 	private void init2(double a, double b) {
 		tx2.setToTranslation(a, b);
-		tx2.scale(scaleWidth2, scaleHeight2);
+		tx2.scale(0.5, 0.5);
 	}
 	
-	private void initn(double a, double b) {
-		txn.setToTranslation(a, b);
-		txn.scale(scaleNormal, scaleNormal);
+	private void init3(double a, double b) {
+		tx3.setToTranslation(a, b);
+		tx3.scale(0.4, 0.4);
 	}
+	
+	
 
 	
 	private Image getImage(String path) {
 		Image tempImage = null;
 		try {
-			URL imageURL = Event.class.getResource(path);
+			URL imageURL = Map.class.getResource(path);
 			tempImage = Toolkit.getDefaultToolkit().getImage(imageURL);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -179,11 +378,84 @@ public class Event {
 	public void setDir(int dir) {
 		this.dir = dir;
 	}
+	
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		//Event f = new Event();
+		//Map f = new Map();
+	}
+	
+	
+	public void mouseEntered(MouseEvent e) {
+       //if(collided(e.getX(), e.getY(), 15, 15)) {
+	//		mouseOver = true;
+	      // System.out.println("cmon do something");
+   //    }
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+       // mouseOver = false;
+    }
+
+	@Override
+	public void mouseClicked(MouseEvent m) {
+		// TODO Auto-generated method stub
+		Rectangle arrowRect = new Rectangle(arrowX, arrowY, arrow.getWidth(null),arrow.getHeight(null));
+		Rectangle mRect = new Rectangle(m.getX(),m.getY(),1,1);
+		Rectangle soupRect = new Rectangle(itemX,itemY,80,110);
+		System.out.println("click");
+		if(arrowRect.intersects(mRect)) {
+			System.out.println("pluh");
+		}
+		
+		Item soup = new Item();
+		soup.dir=0;
+		if(mRect.intersects(soupRect)) {
+			
+			if(player.getHungerScore()<100 && Base.inventory.contains(soup)) {
+				statsPopup();
+				player.setHungerScore(player.getHungerScore()+8);
+				Base.player = this.player;
+			}
+		}
+		
+		
 	}
 
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public boolean isMouseOver() {
+        return mouseOver;
+    }
+
+    public void setMouseOver(boolean mouseOver) {
+        this.mouseOver = mouseOver;
+    }
+    
+	public void statsPopup() {
+		// TODO Auto-generated method stub
+		JOptionPane.showMessageDialog(null, "Stat Increased!",
+				"Well Done!", JOptionPane.INFORMATION_MESSAGE);
+	}
 }
+
+

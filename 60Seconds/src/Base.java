@@ -40,7 +40,9 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 	String dayText;
 	JButton button;
 	static int disaster = 0;
-	Player player = new Player();
+	public static Player player = new Player();
+	Event event;
+	boolean eventOpen;
 	JFrame f;
 	
 	
@@ -49,12 +51,18 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 	boolean time = false;
 	
 	int sanityIncrease=0;
-	ArrayList<Item> inventory = new ArrayList<Item>();
+	public static ArrayList<Item> inventory = new ArrayList<Item>();
 	public void paint(Graphics g) {
 		super.paintComponent(g);
 		
+		
 		player.paint(g);
 		map.paint(g);
+		if(eventOpen) {
+			event.paint(g);
+			//event.setPlayer(player);
+		}
+		
 		
 		
 		
@@ -102,8 +110,9 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 		dayText = "Day: " +day;
 		player.dir=0;
 		map.dir=6;
+		eventOpen=false;
 		
-		
+		event = new Event(player);
 		
 //		button=new JButton("Click Here");  
 //		button.setBounds(50,100,95,30);  
@@ -229,7 +238,7 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 
 	@Override
 	public void mouseClicked(MouseEvent m) {
-		
+		event.mouseClicked(m);
 			
 		}
 			
@@ -291,7 +300,7 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 		//87-w 65-a 83-s 68-d
 		//37-left 38-up  39-right 40-down  
 		//89-y  78-n
-		//67-c
+		//67-c 69-e
 		
 		
 		switch(k.getKeyCode()){
@@ -300,6 +309,9 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 				break;
 			case 67:
 				openStats();
+				break;
+			case 69:
+				eventOpen = true;
 				break;
 		}
 		
