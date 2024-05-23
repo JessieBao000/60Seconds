@@ -41,7 +41,7 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 	int day = 1;
 	String dayText;
 	JButton button;
-	static int disaster = 0;
+	public static int disaster = 0;
 	public static Player player = new Player();
 	Event event;
 	boolean eventOpen;
@@ -117,7 +117,7 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 		
 		event = new Event(player);
 		
-		itemPercent = new ArrayList<>(Arrays.asList(10.0, 10.0, 10.0, 8.0, 8.0, 8.0, 7.0, 5.0, 7.0, 7.0, 2.0, 8.0));
+		itemPercent = new ArrayList<>(Arrays.asList(10.0, 10.0, 10.0, 0.0, 8.0, 8.0, 8.0, 7.0, 5.0, 7.0, 7.0, 2.0, 8.0));
 		
 		ArrayList<Double> adjustedPercentages = adjustPercentages(itemPercent, disaster);
 		itemPercent = adjustedPercentages;

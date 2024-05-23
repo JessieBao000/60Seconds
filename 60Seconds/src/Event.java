@@ -1,4 +1,5 @@
 
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -11,13 +12,22 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 
+import javax.accessibility.Accessible;
+import javax.accessibility.AccessibleContext;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class Event implements MouseListener, KeyListener{
+public class Event implements MouseListener, KeyListener,Icon, Serializable, Accessible{
 
 	private Image soup,water,aid,shelter,cloth,knife,flashlight,
 	 				radio,gas,soap,map,gloves,family,generator,book, notebook, arrow; 
@@ -35,7 +45,8 @@ public class Event implements MouseListener, KeyListener{
 	private boolean mouseOver = false;
 	private String text="Would you like to use any materials today? (Press C for Char stats)";
 	Player player;
-	ArrayList<Double> percent = Base.itemPercent;
+	ArrayList<Double> itemPercent;
+	ImageIcon imageIcon;
 	
 	static Timer tick;
 	int sec = 3;
@@ -43,6 +54,8 @@ public class Event implements MouseListener, KeyListener{
 	public Event(Player player) {
 		
 		this.player = player;
+		
+		imageIcon = new ImageIcon("ashbaby.jpg");
 		
 		soup 	= getImage("/imgs/"+"campbell.png"); 
 		water 	= getImage("/imgs/"+"water.png"); 
@@ -77,7 +90,10 @@ public class Event implements MouseListener, KeyListener{
 		tx2 = AffineTransform.getTranslateInstance(0, 0);
 		tx3 = AffineTransform.getTranslateInstance(0, 0);
 		
-		percent = Base.itemPercent;
+		itemPercent = new ArrayList<>(Arrays.asList(10.0, 10.0, 10.0, 0.0, 8.0, 8.0, 8.0, 7.0, 5.0, 7.0, 7.0, 2.0, 8.0));
+
+		ArrayList<Double> adjustedPercentages = adjustPercentages(itemPercent, Base.disaster);
+		itemPercent = adjustedPercentages;
 		//init(x, y); 
 		
 	}
@@ -104,6 +120,11 @@ public class Event implements MouseListener, KeyListener{
 				g2.drawImage(soup, itemX, itemY, 80, 110, null);
 				break;
 			case 1:
+				text = "Do you want to explore today?";
+				g2.drawString(text, 300, 100);
+				g2.drawString("Press Y for Yes!", 250, 400);
+				g2.drawString("Press N for No!", 400, 400);
+			case 2:
 				text = "Do you want to explore today?";
 				g2.drawString(text, 300, 100);
 				g2.drawString("Press Y for Yes!", 250, 400);
@@ -162,6 +183,30 @@ public class Event implements MouseListener, KeyListener{
 	}
 	
 	
+	
+	public static ArrayList<Double> adjustPercentages(ArrayList<Double> percentages, int dangerScore) {
+		ArrayList<Double> adjusted = new ArrayList<>();
+        int sum = percentages.stream().mapToInt(Double::intValue).sum();
+
+        double adjustmentFactor = 1 + (dangerScore / 10.0);
+        double adjustedSum = 0;
+
+        for (double percent : percentages) {
+            double adjustedPercent = percent / adjustmentFactor;
+            adjusted.add(adjustedPercent);
+            adjustedSum += adjustedPercent;
+        }
+
+        double nothing = 100.0 - adjustedSum;
+//        for (int i = 0; i < adjusted.size(); i++) {
+//            adjusted.set(i, (adjusted.get(i) / totalAdjustment) * 100);
+//        }
+        
+        //adjusted.add(nothing);
+
+        return adjusted;
+    }
+	
 	/*
 	 * 
 	 * 	PICK ITEM BASED ON PERCENTAGES
@@ -179,15 +224,15 @@ public class Event implements MouseListener, KeyListener{
         
         for (int i = 0; i < totalPercent.size(); i++) {
             if (random <= totalPercent.get(i)) {
-                if (i == totalPercent.size() - adjustedPercentages.get(adjustedPercentages.size()-1)) {
-                    return "Nothing";
-                } else {
+                //if (i == totalPercent.size() - totalSum) {
+                //    return "Nothing";
+               // } else {
                     return "Item " + (i + 1) +" " + adjustedPercentages.get(i);
-                }
-            }
+               // }
+            }//return "Nothing";
         }
         
-        return "HELP"; 
+        return "Nothing"; 
     }
 	
 	
@@ -300,38 +345,92 @@ public class Event implements MouseListener, KeyListener{
 				dir=2;
 				break;
 			case 89 :
-				
-				ActionListener taskPerformer = new ActionListener() {
-		             public void actionPerformed(ActionEvent evt) {
-		             	if (sec == 0) {
-		             		System.out.println("he stop");
-		             		for(int i =0; i<3;i++) {
-		             			System.out.println(pickItem(percent));
-		             		}
-		     	            tick.stop();
-			     	  		
-		             	} else {
-		             		System.out.println("he go");
-		             		
-//		             		JOptionPane.showMessageDialog(null, "bruh",
-//									"Too Full!", JOptionPane.INFORMATION_MESSAGE);
-		     	            sec--; 
-		     	        }
-		             }
-		         };
-		         tick = new Timer(1000, taskPerformer);
-		         tick.start();
+				showWindow();
 				
 				
 				break;
 		}
 		
 	}
+	
+	
+	
+    private void showWindow() {
+        // Create the first window with a picture
+        JFrame firstWindow = new JFrame("First Window");
+        firstWindow.setSize(300, 300);
+
+        // Add a picture to the first window
+        JPanel panel = new JPanel();
+        JLabel picLabel = new JLabel(imageIcon);
+        panel.add(picLabel);
+        firstWindow.add(panel);
+
+        // Center the window
+        firstWindow.setLocationRelativeTo(null);
+        firstWindow.setVisible(true);
+
+        // Create an ActionListener for the timer
+        ActionListener taskPerformer = new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                // Stop the timer
+                tick.stop();
+
+                // Close the first window
+                firstWindow.dispose();
+
+                String first = pickItem(itemPercent);
+                String second = pickItem(itemPercent);
+                String third = pickItem(itemPercent);
+                JFrame found=new JFrame("hi");
+                if(first.equals("Nothing")&& second.equals("Nothing")&&third.equals("Nothing")) {
+                	found = new JFrame("Absolutely Nothing lool");
+                	System.out.println("out here in the HELPPPP HEEELLPPPPPP");
+                }
+                // Create the second window
+                JFrame secondWindow = new JFrame("Second Window");
+                secondWindow.setSize(300, 300);
+                //secondWindow.add(found);
+                secondWindow.setDefaultCloseOperation(secondWindow.DISPOSE_ON_CLOSE);
+                secondWindow.setLocationRelativeTo(null);
+                secondWindow.setVisible(true);
+            }
+        };
+
+        // Create and start the timer for 3 seconds (3000 milliseconds)
+        tick = new Timer(3000, taskPerformer);
+        tick.start();
+    }
+
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public AccessibleContext getAccessibleContext() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void paintIcon(Component c, Graphics g, int x, int y) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getIconWidth() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getIconHeight() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }
 
