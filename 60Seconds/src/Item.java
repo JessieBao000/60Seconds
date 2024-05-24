@@ -67,7 +67,7 @@ public class Item implements MouseListener{
 		
 		
 		switch(dir) {
-			case 0:
+			case 0: // SOUP
 				if(x!=1000) {
 					x = 120;
 					y = 190;
@@ -83,7 +83,7 @@ public class Item implements MouseListener{
 					name = "food";
 				}
 				break;
-			case 1:
+			case 1: //WATER
 				if(x!=1000) {
 					x = 200;
 					y = 300;
@@ -99,7 +99,7 @@ public class Item implements MouseListener{
 					name = "water";
 				}
 				break;
-			case 2:
+			case 2: //FIRST AID
 				if(x!=1000) {
 					x = 80;
 					y = 100;
@@ -119,7 +119,7 @@ public class Item implements MouseListener{
 				g2.drawImage(shelter, tx, null);
 				//g2.drawRect(x, y, width, height);
 				break;
-			case 4:
+			case 4: //CLOTHING
 				if(x!=1000) {
 					x = 530;
 					y = 380;
@@ -134,7 +134,7 @@ public class Item implements MouseListener{
 					name = "clothing";
 				}
 				break;
-			case 5:
+			case 5: //KNIFE
 				if(x!=1000) {
 					x = 470;
 					y = 300;
@@ -149,7 +149,7 @@ public class Item implements MouseListener{
 					name = "knife";
 				}
 				break;
-			case 6:
+			case 6: //FLASHLIGHT
 				if(x!=1000) {
 					x = 550;
 					y = 500;
@@ -164,7 +164,7 @@ public class Item implements MouseListener{
 					name = "flashlights";
 				}
 				break;
-			case 7:
+			case 7: //RADIO
 				if(x!=1000) {
 					x = 50;
 					y = 430;
@@ -179,7 +179,7 @@ public class Item implements MouseListener{
 					name = "radio";
 				}
 				break;
-			case 8:
+			case 8: //GASOLINE
 				if(x!=1000) {
 					x = 420;
 					y = 320;
@@ -194,7 +194,7 @@ public class Item implements MouseListener{
 					name = "gasoline";
 				}
 				break;
-			case 9:
+			case 9: //SOAP
 				if(x!=1000) {
 					x = 270;
 					y = 160;
@@ -209,7 +209,7 @@ public class Item implements MouseListener{
 					name = "soap";
 				}
 				break;
-			case 10:
+			case 10: //MAP
 				if(x!=1000) {
 					x = 300;
 					y = 400;
@@ -224,7 +224,7 @@ public class Item implements MouseListener{
 					name = "map";
 				}
 				break;
-			case 11:
+			case 11: //GLOVES
 				if(x!=1000) {
 					x = 100;
 					y = 450;
@@ -239,7 +239,7 @@ public class Item implements MouseListener{
 					name = "gloves";
 				}
 				break;
-			case 12:
+			case 12: //FAMILY PHOTOS
 				if(x!=1000) {
 					x = 260;
 					y = 230;
@@ -254,7 +254,7 @@ public class Item implements MouseListener{
 					name = "familyphotos";
 				}
 				break;
-			case 13:
+			case 13: //GENERATOR
 				if(x!=1000) {
 					x = 600;
 					y = 400;
@@ -269,7 +269,7 @@ public class Item implements MouseListener{
 					name = "generator";
 				}
 				break;
-			case 14:
+			case 14: //BOYSCOUT
 				if(x!=1000) {
 					x=170;
 					y = 400;
