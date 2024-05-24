@@ -130,12 +130,30 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 	        g.fillRect(xx,o1,xw,xh);
 			Font myf2 = new Font ("Serif Bold Italic", 6, 30);
 			g.setFont (myf2);
+			g.setColor(Color.white);
 
 	        g.drawString("RESTART GAME?" , xx, o1+50);
 
-
-	        //Resart Button
+	        int hung = (int) ((hunger/24.0)*100);
+	        int san = (int) ((sanity/24.0)*100);
+	        int hel = (int) ((health/24.0)*100);
+	        int saf = (int) ((saftey/24.0)*100);
 	        
+	        g.drawString("Hunger/Thirst Score: " + "%"+ hung, 30, 100);
+	        
+	        g.drawString("Saftey Score: " + "%" + saf, 30, 200);
+	        
+			g.drawString("Health Score: " + hel + "%", 30, 300);
+	        g.drawString("Sanity Score: " + san + "%" , 30, 400);
+	        
+	        
+	        
+	        /**
+	         *  int selection = JOptionPane.showOptionDialog(null, "Food/Thirst Score: "+round(((hunger/24.0)*100),2) + "%"+"\n"+ "Saftey Score: " +round(( (saftey/49.0)*100),2)  + "%"+"\n"
+		    												+ "Health Score: " + round(((health/53.0)*100),2) + "%"+"\n"+"Sanity Score: " + round(((sanity/55.0)*100),2) + "%"+"\n" , "Times Up!", 
+	         */
+	        //
+//wi, he
 		}
  
 	    

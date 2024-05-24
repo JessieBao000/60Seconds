@@ -93,7 +93,7 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 	public Base(int danger, ArrayList<Item> i) {
 		
 		
-		 f=new JFrame("Button Example");  
+		f =new JFrame("Button Example");  
 		f.setSize(new Dimension(900, 600));
 		f.setBackground(Color.cyan);
 		f.add(this);
@@ -337,7 +337,6 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 	   public void mouseDragged(MouseEvent e) {
 		
 	}
-	
 	
 	   @Override
 	   public void mouseMoved(MouseEvent e) {
