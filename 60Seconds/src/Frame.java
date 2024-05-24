@@ -129,14 +129,12 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 	        g.fillRect(xx,o1,xw,xh);
 			Font myf2 = new Font ("Serif Bold Italic", 6, 30);
 			g.setFont (myf2);
-			g.setColor(Color.white);
 
 	        g.drawString("RESTART GAME?" , xx, o1+50);
 
 
 	        //Resart Button
 	        
-//wi, he
 		}
  
 	    
