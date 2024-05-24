@@ -15,7 +15,9 @@ import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.TimerTask;
 
@@ -39,9 +41,12 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 	int day = 1;
 	String dayText;
 	JButton button;
-	static int disaster = 0;
-	Player player = new Player();
+	public static int disaster = 0;
+	public static Player player = new Player();
+	Event event;
+	boolean eventOpen;
 	JFrame f;
+	public static ArrayList<Double> itemPercent;
 	
 	
 	static Timer tick;
@@ -49,12 +54,18 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 	boolean time = false;
 	
 	int sanityIncrease=0;
-	ArrayList<Item> inventory = new ArrayList<Item>();
+	public static ArrayList<Item> inventory = new ArrayList<Item>();
 	public void paint(Graphics g) {
 		super.paintComponent(g);
 		
+		
 		player.paint(g);
 		map.paint(g);
+		if(eventOpen) {
+			event.paint(g);
+			//event.setPlayer(player);
+		}
+		
 		
 		
 		
@@ -102,8 +113,16 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 		dayText = "Day: " +day;
 		player.dir=0;
 		map.dir=6;
+		eventOpen=false;
 		
+		event = new Event(player);
 		
+		itemPercent = new ArrayList<>(Arrays.asList(10.0, 10.0, 10.0, 0.0, 8.0, 8.0, 8.0, 7.0, 5.0, 7.0, 7.0, 2.0, 8.0));
+		
+		ArrayList<Double> adjustedPercentages = adjustPercentages(itemPercent, disaster);
+		itemPercent = adjustedPercentages;
+        
+
 		
 //		button=new JButton("Click Here");  
 //		button.setBounds(50,100,95,30);  
@@ -123,6 +142,72 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
 	}
+	
+	
+	/*
+	 * 
+	 * CHANGE PERCENTAGE VALUES
+	 * 
+	 */
+	
+	public static ArrayList<Double> adjustPercentages(ArrayList<Double> percentages, int dangerScore) {
+		ArrayList<Double> adjusted = new ArrayList<>();
+        int sum = percentages.stream().mapToInt(Double::intValue).sum();
+
+        double adjustmentFactor = 1 + (dangerScore / 10.0);
+        double adjustedSum = 0;
+
+        for (double percent : percentages) {
+            double adjustedPercent = percent / adjustmentFactor;
+            adjusted.add(adjustedPercent);
+            adjustedSum += adjustedPercent;
+        }
+
+        double nothing = 100.0 - adjustedSum;
+//        for (int i = 0; i < adjusted.size(); i++) {
+//            adjusted.set(i, (adjusted.get(i) / totalAdjustment) * 100);
+//        }
+        
+        adjusted.add(nothing);
+
+        return adjusted;
+    }
+	
+	
+	
+	
+	
+	/*
+	 * 
+	 * 	PICK ITEM BASED ON PERCENTAGES
+	 *
+	 */
+	public static String pickItem(ArrayList<Double> adjustedPercentages) {
+		ArrayList<Double> totalPercent = new ArrayList<>();
+        double totalSum = 0;
+        
+        for (double percentage : adjustedPercentages) {
+            totalSum += percentage;
+            totalPercent.add(totalSum);
+        }
+        double random = Math.random()*100;
+        
+        for (int i = 0; i < totalPercent.size(); i++) {
+            if (random <= totalPercent.get(i)) {
+                if (i == totalPercent.size() - adjustedPercentages.get(adjustedPercentages.size()-1)) {
+                    return "Nothing";
+                } else {
+                    return "Item " + (i + 1) +" " + adjustedPercentages.get(i);
+                }
+            }
+        }
+        
+        return "HELP"; 
+    }
+
+
+
+
 	
 	
 	
@@ -229,7 +314,7 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 
 	@Override
 	public void mouseClicked(MouseEvent m) {
-		
+		event.mouseClicked(m);
 			
 		}
 			
@@ -291,15 +376,27 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 		//87-w 65-a 83-s 68-d
 		//37-left 38-up  39-right 40-down  
 		//89-y  78-n
-		//67-c
+		//67-c 69-e
 		
 		
 		switch(k.getKeyCode()){
 			case 78:
-				newDay();
+				/*newDay();
+				break;*/
+				if(eventOpen) {
+					event.keyPressed(k);
+				}
+				break;
+			case 89 :
+				if(eventOpen) {
+					event.keyPressed(k);
+				}
 				break;
 			case 67:
 				openStats();
+				break;
+			case 69:
+				eventOpen = true;
 				break;
 		}
 		

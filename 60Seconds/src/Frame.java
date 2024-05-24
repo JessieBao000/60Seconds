@@ -43,6 +43,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 	
 	static HashMap dangers = new HashMap<String, State>();
 	static HashMap itemsList = new HashMap<String, ItemsInfo>();
+	public String dangerName="";
 	JFrame f = new JFrame("60 Seconds");
 
 	int disaster = 0;
@@ -52,7 +53,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 	ArrayList<Item> inventory = new ArrayList<Item>();
 	String inventoryString = "Inventory: 0/10";
 	static Timer tick;
-	static int sec = 1;
+	static int sec = 5;
 	int xx = 600,xy= 100,xw = 250,xh= 80; //restart button vals
 	int o1 =300;
 	//scores
@@ -373,26 +374,32 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 		    if (selection == 0) {
 		      disaster = 1;
 		      disaster = ((State)dangers.get(state)).getEarthquake();
+		      dangerName = "earthquake";
 		    }
 		    if (selection == 1) { 
 		    	disaster = 2;
 		    	disaster = ((State)dangers.get(state)).getVolcano();
+		    	dangerName = "volcano";
 		    }
 		    if (selection == 2) { 
 		    	disaster = 3;
 		    	disaster = ((State)dangers.get(state)).getBomb();
+		    	dangerName = "bomb";
 		  }
 		    if(selection == 3) {
 		    	int i = (int) (Math.random()*2);
 		    	if(i == 0) {
 		    		disaster = 1;
-				      disaster = ((State)dangers.get(state)).getEarthquake();		    	}
+				      disaster = ((State)dangers.get(state)).getEarthquake();
+				      dangerName = "earthquake";	    	}
 		    	if (i == 1) { 
-			    	disaster = 2;
-			    	disaster = ((State)dangers.get(state)).getVolcano(); }
+		    		disaster = 2;
+			    	disaster = ((State)dangers.get(state)).getVolcano();
+			    	dangerName = "volcano"; }
 		    	if (i == 2) { 
-			    	disaster = 3;
-			    	disaster = ((State)dangers.get(state)).getBomb(); }
+		    		disaster = 3;
+			    	disaster = ((State)dangers.get(state)).getBomb();
+			    	dangerName = "bomb"; }
 		    }
 		    
 		    if (selection >= 0) {
@@ -417,6 +424,16 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 	
 	
 	
+	public String getDangerName() {
+		return dangerName;
+	}
+
+
+	public void setDangerName(String dangerName) {
+		this.dangerName = dangerName;
+	}
+
+
 	public void basePopup() {
         
 		 String[] options = { "Okay" };
