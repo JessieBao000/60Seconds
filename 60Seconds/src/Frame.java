@@ -343,7 +343,10 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 		f.setVisible(true);
 	}
 	
-
+	public void how2Play() {
+		
+		
+	}
 	public void statePopup() {
 	       // Show input dialog with a message and default value
 	       String userInput = JOptionPane.showInputDialog(
