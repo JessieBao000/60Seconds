@@ -1,7 +1,10 @@
 
 import java.awt.Component;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
@@ -12,6 +15,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;
+import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
@@ -27,6 +31,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import java.io.File;
+
 
 public class Event implements MouseListener, KeyListener,Icon, Serializable, Accessible{
 
@@ -56,6 +62,8 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 	
 	static Timer tick;
 	int sec = 3;
+	
+	Font font;
 	
 	
 	public Event(Player player) {
@@ -96,15 +104,15 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 		itemY = 400;
 		
 		//WATER
-		item2X = 340;
+		item2X = 430;
 		item2Y = 400;
 		
 		//AID
-		item3X = 430;
+		item3X = 630;
 		item3Y = 400;
 		
 		// chance = (int) (Math.random() * randomInt);
-		chance = 0;
+		chance = 8;
 		randomed = new Randomized(Base.inventory);
 		afterText = "♪";
 		randomInt=18;
@@ -118,6 +126,21 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 		ArrayList<Double> adjustedPercentages = adjustPercentages(itemPercent, Base.disaster);
 		itemPercent = adjustedPercentages;
 		//init(x, y); 
+		
+		
+//		try {
+//		    //create the font to use. Specify the size!
+//		    Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("Fonts\\whoaskssatan.ttf")).deriveFont(12f);
+//		    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+//		    //register the font
+//		    ge.registerFont(customFont);
+//		} catch (IOException e) {
+//		    e.printStackTrace();
+//		} catch(FontFormatException e) {
+//		    e.printStackTrace();
+//		}
+		
+		Font myFont = new Font ("Courier New", 1, 50);
 		
 	}
 
@@ -135,13 +158,13 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 		//init2(x,y);
 		g2.drawImage(notebook, 200, 0, 500,600, null);
 		g2.drawImage(arrow, arrowX, arrowY, arrow.getWidth(null), arrow.getHeight(null), null);
-		
+		g2.setFont(font);
 		
 		switch(dir) {
 			case 0:
 				g2.drawString(text, 300, 100);
 				g2.drawImage(soup, itemX, itemY, 80, 110, null);
-				g2.drawImage(water, item2X, item2Y, 80, 110, null);
+				g2.drawImage(water, item2X, item2Y, 70, 110, null);
 				g2.drawImage(aid, item3X, item3Y, 90, 90, null);
 				break;
 			case 1:
@@ -159,8 +182,6 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 				break;
 			case 3:
 				g2.drawString(afterText, 300, 200);
-				g2.drawString("Press Y for Yes!", 250, 400);
-				g2.drawString("Press N for No!", 400, 400);
 				break;
 		}
 
@@ -213,7 +234,7 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 	
 	
 	public void randomize(int i, int chance) {
-		i=0;
+		i=2;
 		switch(chance) {
 			case 0:
 				randomed.savedEnding(i);
@@ -376,7 +397,7 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 		Rectangle arrowRect = new Rectangle(arrowX, arrowY, arrow.getWidth(null),arrow.getHeight(null));
 		Rectangle mRect = new Rectangle(m.getX(),m.getY(),1,1);
 		Rectangle soupRect = new Rectangle(itemX,itemY,80,110);
-		Rectangle waterRect = new Rectangle(item2X,item2Y,80,110);
+		Rectangle waterRect = new Rectangle(item2X,item2Y,70,110);
 		Rectangle aidRect = new Rectangle(item3X,item3Y,90,90);
 		System.out.println("click");
 		if(arrowRect.intersects(mRect)) {
@@ -394,9 +415,13 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 			ArrayList<Item> inventory = Base.inventory;
 			Iterator<Item> iterator = inventory.iterator();
 
+			
+			boolean foodFound = false;
+
 			while (iterator.hasNext()) {
 			    Item item = iterator.next();
 			    if (item.getName().equals("food")) {
+			        foodFound = true;
 			        if (player.getHungerScore() < 100) {
 			            statsPopup();
 			            player.setHungerScore(player.getHungerScore() + 8);
@@ -406,9 +431,15 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 			            JOptionPane.showMessageDialog(null, "You're already full!",
 			                    "Too Full!", JOptionPane.INFORMATION_MESSAGE);
 			        }
-			        break;  // Exit the loop after handling the food item
+			        break;  
 			    }
 			}
+
+			if (!foodFound) {
+			    JOptionPane.showMessageDialog(null, "No soup in your inventory!",
+			            "No Soup", JOptionPane.WARNING_MESSAGE);
+			}
+
 
 			
 		}
@@ -422,9 +453,12 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 			ArrayList<Item> inventory = Base.inventory;
 			Iterator<Item> iterator = inventory.iterator();
 
+			
+			boolean waterFound = false;
 			while (iterator.hasNext()) {
 			    Item item = iterator.next();
 			    if (item.getName().equals("water")) {
+			    	waterFound = true;
 			        if (player.getHungerScore() < 100) {
 			            statsPopup();
 			            player.setHungerScore(player.getHungerScore() + 8);
@@ -436,6 +470,11 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 			        }
 			        break;  
 			    }
+			}
+			
+			if (!waterFound) {
+			    JOptionPane.showMessageDialog(null, "No water in your inventory!",
+			            "No Water", JOptionPane.WARNING_MESSAGE);
 			}
 
 			
@@ -451,6 +490,8 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 					ArrayList<Item> inventory = Base.inventory;
 					Iterator<Item> iterator = inventory.iterator();
 
+					
+					boolean aidFound = false;
 					while (iterator.hasNext()) {
 					    Item item = iterator.next();
 					    if (item.getName().equals("aid")) {
@@ -468,6 +509,11 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 					        }
 					        break;  
 					    }
+					}
+					
+					if (!aidFound) {
+					    JOptionPane.showMessageDialog(null, "No aid in your inventory!",
+					            "No Aid", JOptionPane.WARNING_MESSAGE);
 					}
 
 					

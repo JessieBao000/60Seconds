@@ -1,3 +1,4 @@
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -29,6 +30,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -47,7 +49,8 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 	boolean eventOpen;
 	JFrame f;
 	public static ArrayList<Double> itemPercent;
-	
+	ImageIcon clownIcon;
+
 	
 	static Timer tick;
 	int sec = 1;
@@ -105,6 +108,8 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 		f.setVisible(true);
 		addMouseListener(this);
 		addMouseMotionListener(this);
+
+		clownIcon = new ImageIcon("clownface.png");
 
 		disaster = danger;
 		inventory = i;
@@ -245,6 +250,11 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 			rand.setRunEnding(temp+1);
 			event.setRandomed(rand);
 		}
+		
+		
+
+		
+		
  		repaint();
 			 ActionListener taskPerformer = new ActionListener() {
 	             public void actionPerformed(ActionEvent evt) {
@@ -252,7 +262,7 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 	             		System.out.println("time stop");
 	     	            tick.stop();
 		     	  		map.setX(-1000);
-		     	  		updateDay(10,10,10,10);
+		     	  		updateDay(80,80,80,80);
 	             	} else {
 	             		System.out.println("time go");
 	             		dayText = "";
@@ -312,6 +322,30 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 			player.dir=4;
 		}else if(index==3) {
 			player.dir=1;
+		}
+		
+		
+
+		if(player.getHungerScore() <= 0 || player.getHealthScore() <= 0 || player.getIllScore() <= 0 || player.getMentalScore() <= 0) {
+			// Create a new JFrame
+		    JFrame deadFrame = new JFrame();
+		    deadFrame.setSize(new Dimension(500, 400)); // Set frame size
+		
+		    deadFrame.setLayout(new BorderLayout());
+		
+		    JLabel backgroundLabel = new JLabel(clownIcon);
+		    deadFrame.add(backgroundLabel, BorderLayout.CENTER); 
+		
+		    JLabel label = new JLabel("You died!");
+		    label.setHorizontalAlignment(JLabel.CENTER);
+		    label.setVerticalAlignment(JLabel.CENTER);
+		
+		    deadFrame.getContentPane().add(label, BorderLayout.NORTH);
+		
+		    deadFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		    deadFrame.setVisible(true);
+		
+		    f.dispose();
 		}
 		
 	}

@@ -250,14 +250,13 @@ public class Randomized {
 	}
 	
 	public void infestation(int chance) {
-		text = "There is an infestation of rats in your bunker," + "\n"+
-				"what to do?";
+		text = "There is an infestation of rats in your bunker,\nwhat to do?";
 		
 		if(chance ==0) {
 			afterText = "♪";
 			//picked something
 		}else {
-			afterText = "You feel a little sick...";
+			afterText = "Crazy? I Was Crazy Once. They Locked Me In A Room."+ "\n" +"A Rubber Room. A Rubber Room With Rats. \n And Rats Make Me Crazy";
 			statChange = -20;
 			player.illScore-=20;
 		}
@@ -292,19 +291,17 @@ public class Randomized {
 				"Its probably just the flu.";
 		
 		if(chance ==0) {
+			afterText = "You feel a lot better!";
+			statChange = 20;
+			player.illScore+=20;
+		}else {
 			
 			afterText = "*Cough Cough*";
 			statChange = -10;
 			player.illScore-=10;
-		}else {
-			afterText = "You feel a lot better!";
-			statChange = 20;
-			player.illScore+=20;
 		}
 		
-		//use boy scout book
 		//first aid kit
-		//water
 		//soap
 		
 		
@@ -347,8 +344,10 @@ public class Randomized {
 			afterText = "You got beat up!";
 			statChange = -30;
 			player.healthScore-=statChange;
-		}else {
+		}else if(chance ==1) {
 			afterText = "You got free food!";
+		}else {
+			afterText = "♪";
 		}
 		
 		// y/n
