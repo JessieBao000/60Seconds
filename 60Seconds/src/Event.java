@@ -16,6 +16,7 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 
 import javax.accessibility.Accessible;
 import javax.accessibility.AccessibleContext;
@@ -37,23 +38,30 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 	public int dir=0;
 	public int maxDir=15;
 	int width, height;
-	int x, y,arrowX,arrowY, itemX, itemY, item2X, item2Y;				
+	int x, y,arrowX,arrowY, itemX, itemY, item2X, item2Y, item3X, item3Y;				
 	double scaleWidth = 0.3;		
 	double scaleHeight = 0.3;
 	double scaleWidth2 = 0.2;		
 	double scaleHeight2 = 0.2;
 	private boolean mouseOver = false;
 	private String text="Would you like to use any materials today? (Press C for Char stats)";
-	Player player;
+	public static Player player;
 	ArrayList<Double> itemPercent;
 	ImageIcon imageIcon;
+	
+	Randomized randomed;
+	public int chance;
+	String afterText;
+	int randomInt;
 	
 	static Timer tick;
 	int sec = 3;
 	
+	
 	public Event(Player player) {
 		
 		this.player = player;
+		
 		
 		imageIcon = new ImageIcon("ashbaby.jpg");
 		
@@ -82,9 +90,24 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 		y = 0;
 		arrowX = 700;
 		arrowY = 480;
+		
+		//SOUP
 		itemX = 250;
 		itemY = 400;
 		
+		//WATER
+		item2X = 340;
+		item2Y = 400;
+		
+		//AID
+		item3X = 430;
+		item3Y = 400;
+		
+		// chance = (int) (Math.random() * randomInt);
+		chance = 0;
+		randomed = new Randomized(Base.inventory);
+		afterText = "♪";
+		randomInt=18;
 		
 		tx = AffineTransform.getTranslateInstance(0, 0);
 		tx2 = AffineTransform.getTranslateInstance(0, 0);
@@ -118,17 +141,27 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 			case 0:
 				g2.drawString(text, 300, 100);
 				g2.drawImage(soup, itemX, itemY, 80, 110, null);
+				g2.drawImage(water, item2X, item2Y, 80, 110, null);
+				g2.drawImage(aid, item3X, item3Y, 90, 90, null);
 				break;
 			case 1:
 				text = "Do you want to explore today?";
 				g2.drawString(text, 300, 100);
 				g2.drawString("Press Y for Yes!", 250, 400);
 				g2.drawString("Press N for No!", 400, 400);
+				break;
 			case 2:
-				text = "Do you want to explore today?";
-				g2.drawString(text, 300, 100);
+				randomize(1, chance);
+				text = randomed.getText();
+				g2.drawString(text, 300, 200);
 				g2.drawString("Press Y for Yes!", 250, 400);
 				g2.drawString("Press N for No!", 400, 400);
+				break;
+			case 3:
+				g2.drawString(afterText, 300, 200);
+				g2.drawString("Press Y for Yes!", 250, 400);
+				g2.drawString("Press N for No!", 400, 400);
+				break;
 		}
 
 		//g2.drawRect(x, y, width, height)
@@ -137,13 +170,8 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 
 	}
 	
-	public String getName() {
-		return name;
-	}
+	
 
-	public void setName(String name) {
-		this.name = name;
-	}
 
 	private void init(double a, double b) {
 		tx.setToTranslation(a, b);
@@ -184,6 +212,66 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 	
 	
 	
+	public void randomize(int i, int chance) {
+		i=0;
+		switch(chance) {
+			case 0:
+				randomed.savedEnding(i);
+				break;
+			case 1:
+				randomed.catEnding(i);
+				break;
+			case 2: 
+				randomed.runEnding(i);
+				break;
+			case 3:
+				randomed.robbers1(i);
+				break;
+			case 4:
+				randomed.robbers2(i);
+				break;
+			case 5:
+				randomed.freeFood(i);
+				break;
+			case 6:
+				randomed.freeWater(i);
+				break;
+			case 7:
+				randomed.freeStuff(i);
+				break;
+			case 8:
+				randomed.infestation(i);
+				break;
+			case 9:
+				randomed.scammer(i);
+				break;
+			case 10:
+				randomed.redHerring(i);
+				break;
+			case 11: 
+				randomed.sick(i);
+				break;
+			case 12:
+				randomed.blackHole(i);
+				break;
+			case 13:
+				randomed.lootNeighbor(i);
+				break;
+			case 14:
+				randomed.sanityHelp(i);
+				break;
+			case 15:
+				randomed.nothing1();
+				break;
+			case 16:
+				randomed.nothing2();
+				break;
+			case 17:
+				randomed.nothing3();
+				break;
+		}
+	}
+	
 	public static ArrayList<Double> adjustPercentages(ArrayList<Double> percentages, int dangerScore) {
 		ArrayList<Double> adjusted = new ArrayList<>();
         int sum = percentages.stream().mapToInt(Double::intValue).sum();
@@ -213,27 +301,38 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 	 *
 	 */
 	public static String pickItem(ArrayList<Double> adjustedPercentages) {
-		ArrayList<Double> totalPercent = new ArrayList<>();
-        double totalSum = 0;
-        
-        for (double percentage : adjustedPercentages) {
-            totalSum += percentage;
-            totalPercent.add(totalSum);
-        }
-        double random = Math.random()*100;
-        
-        for (int i = 0; i < totalPercent.size(); i++) {
-            if (random <= totalPercent.get(i)) {
-                //if (i == totalPercent.size() - totalSum) {
-                //    return "Nothing";
-               // } else {
-                    return "Item " + (i + 1) +" " + adjustedPercentages.get(i);
-               // }
-            }//return "Nothing";
-        }
-        
-        return "Nothing"; 
-    }
+	    ArrayList<Double> totalPercent = new ArrayList<>();
+	    double totalSum = 0;
+
+	    // Create cumulative percentage list
+	    for (double percentage : adjustedPercentages) {
+	        totalSum += percentage;
+	        totalPercent.add(totalSum);
+	    }
+
+	    // Adjust the range of the random number to the total sum of percentages
+	    double random = Math.random() * 100;
+	    System.out.println("Random number: " + random);  // For debugging
+
+	    // Find the corresponding item
+	    for (int i = 0; i < totalPercent.size(); i++) {
+	        if (random <= totalPercent.get(i)) {
+	        	System.out.println("got it boss");
+	            Item temp = new Item();
+	            int dir=i;
+	            if(i>=3) {
+	            	dir+=1;
+	            }
+	            temp.setDir(dir);
+	            System.out.println(temp.dir);
+	            System.out.println(temp.name);
+	            return temp.getName();
+	        }
+	    }
+
+	    return "Nothing";
+	}
+
 	
 	
 	public int getDir() {
@@ -277,30 +376,102 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 		Rectangle arrowRect = new Rectangle(arrowX, arrowY, arrow.getWidth(null),arrow.getHeight(null));
 		Rectangle mRect = new Rectangle(m.getX(),m.getY(),1,1);
 		Rectangle soupRect = new Rectangle(itemX,itemY,80,110);
+		Rectangle waterRect = new Rectangle(item2X,item2Y,80,110);
+		Rectangle aidRect = new Rectangle(item3X,item3Y,90,90);
 		System.out.println("click");
 		if(arrowRect.intersects(mRect)) {
-			dir = 1;
+			if(dir==1) {
+				//chance = (int) (Math.random() * randomInt);
+			}
+			dir +=1;
 		}
 		
+		//SOUP
 		Item soup = new Item();
 		soup.dir=0;
 		if(mRect.intersects(soupRect)) {
 			
-			ArrayList<Item> temp = Base.inventory;
-			for(Item item : temp) {
-				if(item.getName().equals("food")) {
-					if(player.getHungerScore()<100) {
-						statsPopup();
-						player.setHungerScore(player.getHungerScore()+8);
-						Base.player = this.player;
-					}else {
-						JOptionPane.showMessageDialog(null, "You're already full!",
-								"Too Full!", JOptionPane.INFORMATION_MESSAGE);
-					}
-				}
+			ArrayList<Item> inventory = Base.inventory;
+			Iterator<Item> iterator = inventory.iterator();
+
+			while (iterator.hasNext()) {
+			    Item item = iterator.next();
+			    if (item.getName().equals("food")) {
+			        if (player.getHungerScore() < 100) {
+			            statsPopup();
+			            player.setHungerScore(player.getHungerScore() + 8);
+			            Base.player = this.player;
+			            iterator.remove();  // Safely remove the item from the inventory
+			        } else {
+			            JOptionPane.showMessageDialog(null, "You're already full!",
+			                    "Too Full!", JOptionPane.INFORMATION_MESSAGE);
+			        }
+			        break;  // Exit the loop after handling the food item
+			    }
 			}
+
 			
 		}
+		
+		
+		//WATER
+		Item water = new Item();
+		water.dir=1;
+		if(mRect.intersects(waterRect)) {
+			
+			ArrayList<Item> inventory = Base.inventory;
+			Iterator<Item> iterator = inventory.iterator();
+
+			while (iterator.hasNext()) {
+			    Item item = iterator.next();
+			    if (item.getName().equals("water")) {
+			        if (player.getHungerScore() < 100) {
+			            statsPopup();
+			            player.setHungerScore(player.getHungerScore() + 8);
+			            Base.player = this.player;
+			            iterator.remove();  
+			        } else {
+			            JOptionPane.showMessageDialog(null, "You're already quenched!",
+			                    "Too Quenched!", JOptionPane.INFORMATION_MESSAGE);
+			        }
+			        break;  
+			    }
+			}
+
+			
+		}
+		
+		
+		
+		//AID
+				Item aid = new Item();
+				aid.dir=2;
+				if(mRect.intersects(aidRect)) {
+					
+					ArrayList<Item> inventory = Base.inventory;
+					Iterator<Item> iterator = inventory.iterator();
+
+					while (iterator.hasNext()) {
+					    Item item = iterator.next();
+					    if (item.getName().equals("aid")) {
+					        if (player.getHealthScore() < 100) {
+					            statsPopup();
+					            player.setHungerScore(player.getHealthScore() + 8);
+					            if(player.getIllScore()<100) {
+					            	player.setIllScore(player.getIllScore() + 8);
+					            }
+					            Base.player = this.player;
+					            iterator.remove();  
+					        } else {
+					            JOptionPane.showMessageDialog(null, "You're already healed!",
+					                    "Too Healed!", JOptionPane.INFORMATION_MESSAGE);
+					        }
+					        break;  
+					    }
+					}
+
+					
+				}
 		
 		
 	}
@@ -342,10 +513,14 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 		//78-n 89-y 
 		switch(e.getKeyCode()) {
 			case 78:
-				dir=2;
+				dir+=1;
 				break;
 			case 89 :
-				showWindow();
+				if(dir==1) {
+					showWindow();
+				}else {
+					randomize(0,chance);
+				}
 				
 				
 				break;
@@ -383,7 +558,10 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
                 String second = pickItem(itemPercent);
                 String third = pickItem(itemPercent);
                 JFrame found=new JFrame("hi");
-                if(first.equals("Nothing")&& second.equals("Nothing")&&third.equals("Nothing")) {
+                System.out.println(first);
+                System.out.println(second);
+                System.out.println(third);
+                if("Nothing".equals(first)&& "Nothing".equals(second)&&"Nothing".equals(third)) {
                 	found = new JFrame("Absolutely Nothing lool");
                 	System.out.println("out here in the HELPPPP HEEELLPPPPPP");
                 }
@@ -431,6 +609,31 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 	public int getIconHeight() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	
+	public String getAfterText() {
+		return afterText;
+	}
+
+	public void setAfterText(String afterText) {
+		this.afterText = afterText;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Randomized getRandomed() {
+		return randomed;
+	}
+
+	public void setRandomed(Randomized randomed) {
+		this.randomed = randomed;
 	}
 }
 

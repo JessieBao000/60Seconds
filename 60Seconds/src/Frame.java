@@ -139,12 +139,12 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 	        int hel = (int) ((health/24.0)*100);
 	        int saf = (int) ((saftey/24.0)*100);
 	        
-	        g.drawString("Hunger/Thirst Score: " + "%"+ hung, 30, 100);
+	        g.drawString("Hunger/Thirst Score: " + round(((hunger/24.0)*100),2) + "%", 30, 100);
 	        
-	        g.drawString("Saftey Score: " + "%" + saf, 30, 200);
+	        g.drawString("Saftey Score: " + round(( (saftey/49.0)*100),2)  + "%", 30, 200);
 	        
-			g.drawString("Health Score: " + hel + "%", 30, 300);
-	        g.drawString("Sanity Score: " + san + "%" , 30, 400);
+			g.drawString("Health Score: " +round(((health/53.0)*100),2) + "%", 30, 300);
+	        g.drawString("Sanity Score: " + round(((sanity/55.0)*100),2) + "%" , 30, 400);
 	        
 	        
 	        

@@ -198,7 +198,7 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
                     return "Nothing";
                 } else {
                     return "Item " + (i + 1) +" " + adjustedPercentages.get(i);
-                }
+                } 
             }
         }
         
@@ -208,10 +208,13 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 
 
 
-	
+	/*
+	 * NEW DAY 
+	 */
 	
 	
 	public void newDay() {
+		eventOpen = false;
 		while(map.getX()+ 900< 900) {
 			map.setVx(1);
 			map.x=map.getX()+map.getVx();
@@ -224,6 +227,24 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 		map.setVx(0);
 		map.x=0;
 		dayText = "";
+		event.setAfterText(event.getRandomed().getAfterText());
+		event.setDir(-1);
+		if(event.chance==0) {
+			int temp =event.getRandomed().getSavedEnding();
+			Randomized rand = event.getRandomed();
+			rand.setSavedEnding(temp+1);
+			event.setRandomed(rand);
+		}else if(event.chance==1) {
+			int temp =event.getRandomed().getCatEnding();
+			Randomized rand = event.getRandomed();
+			rand.setCatEnding(temp+1);
+			event.setRandomed(rand);
+		}else if(event.chance==2) {
+			int temp =event.getRandomed().getRunEnding();
+			Randomized rand = event.getRandomed();
+			rand.setRunEnding(temp+1);
+			event.setRandomed(rand);
+		}
  		repaint();
 			 ActionListener taskPerformer = new ActionListener() {
 	             public void actionPerformed(ActionEvent evt) {
@@ -349,7 +370,9 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 
 	@Override
 	public void mousePressed(MouseEvent m) {
-		
+		if(event.getDir()>=3) {
+			newDay();
+		}
 	
 		
 	}
@@ -380,12 +403,12 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 		
 		switch(k.getKeyCode()){
 			case 78:
-				/*newDay();
-				break;*/
-				if(eventOpen) {
+				newDay();
+				break;
+				/*if(eventOpen) {
 					event.keyPressed(k);
 				}
-				break;
+				break;*/
 			case 89 :
 				if(eventOpen) {
 					event.keyPressed(k);

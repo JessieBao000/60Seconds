@@ -52,6 +52,22 @@ public class Player {
 		Graphics2D g2 = (Graphics2D) g;
 
 		g.drawRect(x, y, width, height);
+		
+		if(hungerScore>100) {
+			hungerScore=100;
+		}
+		
+		if(mentalScore>100) {
+			mentalScore=100;
+		}
+		
+		if(healthScore>100) {
+			healthScore=100;
+		}
+		
+		if(illScore>100) {
+			illScore=100;
+		}
 
 		switch(dir) {
 			case 0:

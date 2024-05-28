@@ -13,7 +13,7 @@ public class Item implements MouseListener{
 
 	private Image soup,water,aid,shelter,cloth,knife,flashlight,
 	 				radio,gas,soap,map,gloves,family,generator,book; 
-	private String name;
+	public String name;
 	private AffineTransform tx, tx2,tx3;
 	private Image glow;
 	public int dir=0;
@@ -117,6 +117,7 @@ public class Item implements MouseListener{
 			case 3:
 				init(x,y);
 				g2.drawImage(shelter, tx, null);
+				name = "peewizz";
 				//g2.drawRect(x, y, width, height);
 				break;
 			case 4: //CLOTHING
@@ -346,7 +347,58 @@ public class Item implements MouseListener{
 
 	public void setDir(int dir) {
 		this.dir = dir;
+		updateName();
 	}
+	
+	
+	private void updateName() {
+        switch (dir) {
+            case 0:
+                name = "food";
+                break;
+            case 1:
+                name = "water";
+                break;
+            case 2:
+                name = "firstaidkit";
+                break;
+            case 3:
+                name = "shelter";
+                break;
+            case 4:
+                name = "clothing";
+                break;
+            case 5:
+                name = "knife";
+                break;
+            case 6:
+                name = "flashlights";
+                break;
+            case 7:
+                name = "radio";
+                break;
+            case 8:
+                name = "gasoline";
+                break;
+            case 9:
+                name = "soap";
+                break;
+            case 10:
+                name = "map";
+                break;
+            case 11:
+                name = "gloves";
+                break;
+            case 12:
+                name = "familyphotos";
+                break;
+            case 13:
+                name = "generator";
+                break;
+            default:
+                name = null;
+        }
+    }
 	
 	public int getX() {
 		return x;
