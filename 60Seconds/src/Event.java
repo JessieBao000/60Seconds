@@ -37,7 +37,7 @@ import java.io.File;
 public class Event implements MouseListener, KeyListener,Icon, Serializable, Accessible{
 
 	private Image soup,water,aid,shelter,cloth,knife,flashlight,
-	 				radio,gas,soap,map,gloves,family,generator,book, notebook, arrow; 
+	 				radio,gas,soap,map,gloves,family,generator,book, notebook, arrow, check, xmark; 
 	private String name;
 	private AffineTransform tx, tx2,tx3;
 	private Image glow;
@@ -50,7 +50,8 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 	double scaleWidth2 = 0.2;		
 	double scaleHeight2 = 0.2;
 	private boolean mouseOver = false;
-	private String text="Would you like to use any materials today? (Press C for Char stats)";
+	private String text="Would you like to use any materials today?";
+	public String option1,option2;
 	public static Player player;
 	ArrayList<Double> itemPercent;
 	ImageIcon imageIcon;
@@ -67,6 +68,7 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 	
 	
 	public Event(Player player) {
+		
 		
 		this.player = player;
 		
@@ -91,6 +93,11 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 		glow = getImage("/imgs/"+"glow.png");
 		notebook = getImage("/imgs/"+"notebook.png");
 		arrow = getImage("/imgs/"+"arrow.png");
+		check = getImage("/imgs/"+"checkmark.png");
+		xmark = getImage("/imgs/"+"x.png");
+		
+		option1="";
+		option2="";
 		
 		width = 100;
 		height = 100;
@@ -100,7 +107,7 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 		arrowY = 480;
 		
 		//SOUP
-		itemX = 250;
+		itemX = 290;
 		itemY = 400;
 		
 		//WATER
@@ -108,14 +115,14 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 		item2Y = 400;
 		
 		//AID
-		item3X = 630;
+		item3X = 530;
 		item3Y = 400;
 		
-		// chance = (int) (Math.random() * randomInt);
-		chance = 8;
+		randomInt=18;
+		 chance = (int) (Math.random() * randomInt);
+		//chance = 8;
 		randomed = new Randomized(Base.inventory);
 		afterText = "♪";
-		randomInt=18;
 		
 		tx = AffineTransform.getTranslateInstance(0, 0);
 		tx2 = AffineTransform.getTranslateInstance(0, 0);
@@ -140,7 +147,10 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 //		    e.printStackTrace();
 //		}
 		
-		Font myFont = new Font ("Courier New", 1, 50);
+		Font myFont = new Font ("Courier New", 1, 20);
+		
+		
+		
 		
 	}
 
@@ -162,26 +172,27 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 		
 		switch(dir) {
 			case 0:
-				g2.drawString(text, 300, 100);
+				g2.drawString("Would you like to use any materials today?", 300, 200);
 				g2.drawImage(soup, itemX, itemY, 80, 110, null);
-				g2.drawImage(water, item2X, item2Y, 70, 110, null);
+				g2.drawImage(water, item2X, item2Y, 70, 130, null);
 				g2.drawImage(aid, item3X, item3Y, 90, 90, null);
 				break;
 			case 1:
 				text = "Do you want to explore today?";
-				g2.drawString(text, 300, 100);
-				g2.drawString("Press Y for Yes!", 250, 400);
-				g2.drawString("Press N for No!", 400, 400);
-				break;
-			case 2:
-				randomize(1, chance);
-				text = randomed.getText();
 				g2.drawString(text, 300, 200);
-				g2.drawString("Press Y for Yes!", 250, 400);
-				g2.drawString("Press N for No!", 400, 400);
+				g2.drawImage(check, itemX, itemY, 80, 80, null);
+				g2.drawImage(xmark, item3X, item3Y, 80, 80, null);
 				break;
 			case 3:
+				randomize(2, chance);
+				text = randomed.getText();
+				g2.drawString(text, 300, 200);
+				g2.drawString(option1, 250, 400);
+				g2.drawString(option2, 400, 400);
+				break;
+			case 2:
 				g2.drawString(afterText, 300, 200);
+
 				break;
 		}
 
@@ -234,7 +245,6 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 	
 	
 	public void randomize(int i, int chance) {
-		i=2;
 		switch(chance) {
 			case 0:
 				randomed.savedEnding(i);
@@ -397,12 +407,14 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 		Rectangle arrowRect = new Rectangle(arrowX, arrowY, arrow.getWidth(null),arrow.getHeight(null));
 		Rectangle mRect = new Rectangle(m.getX(),m.getY(),1,1);
 		Rectangle soupRect = new Rectangle(itemX,itemY,80,110);
-		Rectangle waterRect = new Rectangle(item2X,item2Y,70,110);
+		Rectangle waterRect = new Rectangle(item2X,item2Y,70,130);
 		Rectangle aidRect = new Rectangle(item3X,item3Y,90,90);
+		Rectangle checkRect = new Rectangle(itemX,itemY,80,80);
+		Rectangle xRect = new Rectangle(item3X,item3Y,80,80);
 		System.out.println("click");
 		if(arrowRect.intersects(mRect)) {
-			if(dir==1) {
-				//chance = (int) (Math.random() * randomInt);
+			if(dir==2) {
+				chance = (int) (Math.random() * randomInt);
 			}
 			dir +=1;
 		}
@@ -410,7 +422,7 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 		//SOUP
 		Item soup = new Item();
 		soup.dir=0;
-		if(mRect.intersects(soupRect)) {
+		if(mRect.intersects(soupRect)&&dir==0&& Base.eventOpen) {
 			
 			ArrayList<Item> inventory = Base.inventory;
 			Iterator<Item> iterator = inventory.iterator();
@@ -448,14 +460,14 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 		//WATER
 		Item water = new Item();
 		water.dir=1;
-		if(mRect.intersects(waterRect)) {
+		if(mRect.intersects(waterRect)&&dir==0) {
 			
 			ArrayList<Item> inventory = Base.inventory;
 			Iterator<Item> iterator = inventory.iterator();
 
 			
 			boolean waterFound = false;
-			while (iterator.hasNext()) {
+			while (iterator.hasNext()&& dir==0 &&Base.eventOpen) {
 			    Item item = iterator.next();
 			    if (item.getName().equals("water")) {
 			    	waterFound = true;
@@ -485,7 +497,7 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 		//AID
 				Item aid = new Item();
 				aid.dir=2;
-				if(mRect.intersects(aidRect)) {
+				if(mRect.intersects(aidRect)&& dir==0&&Base.eventOpen) {
 					
 					ArrayList<Item> inventory = Base.inventory;
 					Iterator<Item> iterator = inventory.iterator();
@@ -519,6 +531,17 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 					
 				}
 		
+				
+				if(dir==1) {
+					if(mRect.intersects(xRect)) {
+						dir+=1;
+					}
+					
+					if(mRect.intersects(checkRect)) {
+						showWindow();
+						dir+=1;
+					}
+				}
 		
 	}
 
@@ -556,75 +579,92 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		//78-n 89-y 
-		switch(e.getKeyCode()) {
-			case 78:
-				dir+=1;
-				break;
-			case 89 :
-				if(dir==1) {
-					showWindow();
-				}else {
-					randomize(0,chance);
-				}
-				
-				
-				break;
-		}
-		
+	    int keyCode = e.getKeyCode();
+	    
+	    switch (keyCode) {
+	        case KeyEvent.VK_N:
+	            // Handle the 'N' key press
+	            dir += 1;
+	            break;
+	        case KeyEvent.VK_Y:
+	            if (dir == 1) {
+	                showWindow();
+	            }
+	            dir+=1;
+	            break;
+	        case KeyEvent.VK_1:
+	            if (dir == 3) {
+	                randomize(0, chance);
+	            } else {
+	                randomize(1, chance);
+	            }
+	            break;
+	    }
 	}
+
 	
 	
 	
-    private void showWindow() {
-        // Create the first window with a picture
-        JFrame firstWindow = new JFrame("First Window");
-        firstWindow.setSize(300, 300);
+	private void showWindow() {
+	    // Create the first window with a picture
+	    JFrame firstWindow = new JFrame("First Window");
+	    firstWindow.setSize(300, 300);
 
-        // Add a picture to the first window
-        JPanel panel = new JPanel();
-        JLabel picLabel = new JLabel(imageIcon);
-        panel.add(picLabel);
-        firstWindow.add(panel);
+	    // Add a picture to the first window
+	    JPanel panel = new JPanel();
+	    JLabel picLabel = new JLabel(imageIcon);
+	    panel.add(picLabel);
+	    firstWindow.add(panel);
 
-        // Center the window
-        firstWindow.setLocationRelativeTo(null);
-        firstWindow.setVisible(true);
+	    // Center the window
+	    firstWindow.setLocationRelativeTo(null);
+	    firstWindow.setVisible(true);
 
-        // Create an ActionListener for the timer
-        ActionListener taskPerformer = new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                // Stop the timer
-                tick.stop();
+	    // Create an ActionListener for the timer
+	    ActionListener taskPerformer = new ActionListener() {
+	        public void actionPerformed(ActionEvent evt) {
+	            // Stop the timer
+	            tick.stop();
 
-                // Close the first window
-                firstWindow.dispose();
+	            // Close the first window
+	            firstWindow.dispose();
 
-                String first = pickItem(itemPercent);
-                String second = pickItem(itemPercent);
-                String third = pickItem(itemPercent);
-                JFrame found=new JFrame("hi");
-                System.out.println(first);
-                System.out.println(second);
-                System.out.println(third);
-                if("Nothing".equals(first)&& "Nothing".equals(second)&&"Nothing".equals(third)) {
-                	found = new JFrame("Absolutely Nothing lool");
-                	System.out.println("out here in the HELPPPP HEEELLPPPPPP");
-                }
-                // Create the second window
-                JFrame secondWindow = new JFrame("Second Window");
-                secondWindow.setSize(300, 300);
-                //secondWindow.add(found);
-                secondWindow.setDefaultCloseOperation(secondWindow.DISPOSE_ON_CLOSE);
-                secondWindow.setLocationRelativeTo(null);
-                secondWindow.setVisible(true);
-            }
-        };
+	            // Pick items
+	            String first = pickItem(itemPercent);
+	            String second = pickItem(itemPercent);
+	            String third = pickItem(itemPercent);
 
-        // Create and start the timer for 3 seconds (3000 milliseconds)
-        tick = new Timer(3000, taskPerformer);
-        tick.start();
-    }
+	            // Create the second window
+	            JFrame secondWindow = new JFrame("Second Window");
+	            secondWindow.setSize(300, 300);
+
+	            // Display items if found
+	            if (!first.equals("Nothing") || !second.equals("Nothing") || !third.equals("Nothing")) {
+	                StringBuilder message = new StringBuilder("You found:");
+	                if (!first.equals("Nothing")) {
+	                    message.append(" ").append(first);
+	                }
+	                if (!second.equals("Nothing")) {
+	                    message.append(", ").append(second);
+	                }
+	                if (!third.equals("Nothing")) {
+	                    message.append(", ").append(third);
+	                }
+	                JOptionPane.showMessageDialog(secondWindow, message.toString(), "Items Found", JOptionPane.INFORMATION_MESSAGE);
+	            } else {
+	                // Display "Absolutely Nothing" if no items found
+	                JOptionPane.showMessageDialog(secondWindow, "Absolutely Nothing", "No Items Found", JOptionPane.INFORMATION_MESSAGE);
+	            }
+
+	        }
+	    };
+
+	    // Create and start the timer for 3 seconds (3000 milliseconds)
+	    tick = new Timer(3000, taskPerformer);
+	    tick.start();
+	}
+
+
 
 
 	@Override
