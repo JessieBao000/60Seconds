@@ -53,7 +53,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 	ArrayList<Item> inventory = new ArrayList<Item>();
 	String inventoryString = "Inventory: 0/10";
 	static Timer tick;
-	static int sec = 5;
+	static int sec = 10;
 	int xx = 600,xy= 100,xw = 250,xh= 80; //restart button vals
 	int o1 =300;
 	//scores
@@ -431,7 +431,9 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 	        	            System.out.println("complete");
 	        	            tick.stop();
 	        	            map.dir = 5;
-	        	            
+	        	        if (sec == 1) {
+	        	        //keyReleased();	
+	        	        }
 	                	} else {
 	        	            sec--; 
 	        	            repaint(); 
@@ -591,7 +593,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 		//87-w 65-a 83-s 68-d
 		//37-left 38-up  39-right 40-down  
 		
-		
+		if(sec >1) {
 		
 		switch(k.getKeyCode()){
 			case 37: //left
@@ -618,10 +620,11 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 				
 		}
 	}
+	}
 
 	@Override
 	public void keyReleased(KeyEvent k) {
-		
+	
 		
 	}
 
