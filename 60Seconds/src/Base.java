@@ -92,7 +92,7 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
         inventoryButton.addActionListener(this);
         buttonPanel.add(inventoryButton);
 
-        this.add(buttonPanel, BorderLayout.NORTH);
+        f.add(buttonPanel, BorderLayout.NORTH);
         f.setFocusable(true);
         f.requestFocusInWindow();
         f.add(this);

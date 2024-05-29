@@ -50,8 +50,12 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 	double scaleWidth2 = 0.2;		
 	double scaleHeight2 = 0.2;
 	private boolean mouseOver = false;
-	private String text="Would you like to use any materials today?";
-	public String option1,option2;
+	
+	public String text="Would you like to use any materials today?";
+	public String secondText = "";
+	public String thirdText = "";
+	
+	public Image option1,option2;
 	public static Player player;
 	ArrayList<Double> itemPercent;
 	ImageIcon imageIcon;
@@ -96,8 +100,8 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 		check = getImage("/imgs/"+"checkmark.png");
 		xmark = getImage("/imgs/"+"x.png");
 		
-		option1="";
-		option2="";
+		option1=getImage("/imgs/"+"checkmark.png");
+		option2=getImage("/imgs/"+"xmark.png");
 		
 		width = 100;
 		height = 100;
@@ -119,8 +123,8 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 		item3Y = 400;
 		
 		randomInt=18;
-		 chance = (int) (Math.random() * randomInt);
-		//chance = 8;
+		 //chance = (int) (Math.random() * randomInt);
+		chance = 14;
 		randomed = new Randomized(Base.inventory);
 		afterText = "♪";
 		
@@ -186,9 +190,13 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 			case 3:
 				randomize(2, chance);
 				text = randomed.getText();
+				secondText = randomed.getSecondText();
+				thirdText = randomed.getThirdText();
 				g2.drawString(text, 300, 200);
-				g2.drawString(option1, 250, 400);
-				g2.drawString(option2, 400, 400);
+				g2.drawString(secondText, 300, 250);
+				g2.drawString(thirdText, 300, 300);
+				g2.drawImage(option1, itemX, itemY, option1.getWidth(null), option1.getHeight(null), null);
+				g2.drawImage(option2, item3X, item3Y, option1.getWidth(null), option1.getWidth(null), null);
 				break;
 			case 2:
 				g2.drawString(afterText, 300, 200);
@@ -411,10 +419,12 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 		Rectangle aidRect = new Rectangle(item3X,item3Y,90,90);
 		Rectangle checkRect = new Rectangle(itemX,itemY,80,80);
 		Rectangle xRect = new Rectangle(item3X,item3Y,80,80);
+		Rectangle oneRect = new Rectangle(itemX,itemY,option1.getWidth(null),option2.getHeight(null));
+		Rectangle twoRect = new Rectangle(item3X,item3Y,option2.getWidth(null),option2.getHeight(null));
 		System.out.println("click");
 		if(arrowRect.intersects(mRect)) {
 			if(dir==2) {
-				chance = (int) (Math.random() * randomInt);
+				//chance = (int) (Math.random() * randomInt);
 			}
 			dir +=1;
 		}
@@ -542,8 +552,23 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 						dir+=1;
 					}
 				}
+				
+				
+				if (dir == 3) {
+					if(mRect.intersects(oneRect)) {
+						randomize(0, chance);
+						dir+=1;
+					}
+					
+					if(mRect.intersects(twoRect)) {
+		                randomize(1, chance);
+		                dir+=1;
+		            }
+	            } 
 		
 	}
+
+	
 
 	@Override
 	public void mousePressed(MouseEvent e) {
@@ -665,7 +690,21 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 	}
 
 
+	public Image getOption1() {
+		return option1;
+	}
 
+	public void setOption1(Image option1) {
+		this.option1 = option1;
+	}
+
+	public Image getOption2() {
+		return option2;
+	}
+
+	public void setOption2(Image option2) {
+		this.option2 = option2;
+	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {

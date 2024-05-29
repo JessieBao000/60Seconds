@@ -1,3 +1,6 @@
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class Randomized {
@@ -7,7 +10,11 @@ public class Randomized {
 	public static int savedEnding; //ends at step 4
 	public static int catEnding; //ends at step 4
 	public static int runEnding; // ends at step 4
-	public String text;
+	public String text,secondText,thirdText;
+	
+	public Image option1,option2;
+	
+
 	public String afterText;
 	public int statChange;
 	ArrayList<Item> inventory;
@@ -19,9 +26,27 @@ public class Randomized {
 		catEnding = 0;
 		runEnding=0;
 		text = "";
+		secondText="";
+		thirdText = "";
 		afterText = "♪";
 		inventory = items;
 		player = Event.player;
+		
+		option1=getImage("/imgs/"+"checkmark.png");
+		option2=getImage("/imgs/"+"xmark.png");
+	}
+	
+	
+	
+	private Image getImage(String path) {
+		Image tempImage = null;
+		try {
+			URL imageURL = Map.class.getResource(path);
+			tempImage = Toolkit.getDefaultToolkit().getImage(imageURL);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return tempImage;
 	}
 	
 	public void randomEvent() {
@@ -337,8 +362,8 @@ public class Randomized {
 	
 	
 	public void lootNeighbor(int chance) {
-		text = "You remember that your neighbor had spare soups in his kitchen," + "\n\t" + 
-	              "Sharing is caring, right?";
+		text = "You remember that your neighbor had spare soups in his kitchen,";
+		secondText ="Sharing is caring, right?";
 		
 		if(chance ==0) {
 			afterText = "You got beat up!";
@@ -354,14 +379,21 @@ public class Randomized {
 	}
 	
 	public void sanityHelp(int chance){
-		text = "You've been spending your past time starring at concrete walls." + "\n" + 
-				"Maybe its time to do something interesting with your boring life...";
+		text = "You've been spending your past time starring at concrete walls.";
+		secondText = "Maybe its time to do something interesting with your boring life...";
+		option1 = getImage("/imgs/"+"book.png"); 
+		option2 = getImage("/imgs/"+"knife.png"); 
 		if(chance ==0) {
 			afterText = "You feel a little better about your situation!";
 			// use boy scout book
-			// knife
 			
 			statChange = 20;
+			player.mentalScore+=statChange;
+		}else if(chance ==1){
+			afterText = "You feel a little better about your situation!";
+			// knife
+			
+			statChange = 25;
 			player.mentalScore+=statChange;
 		}else {
 			afterText = "♪";
@@ -371,21 +403,44 @@ public class Randomized {
 	
 
 	public void nothing1(){
-		text = "You're getting used to bunker life, but you really miss your dog, Peanuts." + "\n" + "Maybe he'll come back...";
+		text = "You're getting used to bunker life, but you really miss your dog, Peanuts.";
+		secondText = "Maybe he'll come back...";
 		afterText = "♪";
+		option1 = null;
+		option2 = null;
+		
 	}
 	
 	public void nothing2(){
-		text = "How much wood could a woodchuck chuck, if a woodchuck could chuck wood.";
+		text = "How much wood could a woodchuck chuck, ";
+		secondText ="if a woodchuck could chuck wood.";
 		afterText = "♪";
+		option1 = null;
+		option2 = null;
 	}
 	
 	public void nothing3(){
 		text = "Do you hear that too?";
 		afterText = "♪";
+		option1 = null;
+		option2 = null;
 	}
 	
-	
+	public String getSecondText() {
+		return secondText;
+	}
+
+	public void setSecondText(String secondText) {
+		this.secondText = secondText;
+	}
+
+	public String getThirdText() {
+		return thirdText;
+	}
+
+	public void setThirdText(String thirdText) {
+		this.thirdText = thirdText;
+	}
 	
 	
 	public static int getSavedEnding() {
