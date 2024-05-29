@@ -1,7 +1,10 @@
 
 import java.awt.Component;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
@@ -12,6 +15,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;
+import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
@@ -27,11 +31,13 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import java.io.File;
+
 
 public class Event implements MouseListener, KeyListener,Icon, Serializable, Accessible{
 
 	private Image soup,water,aid,shelter,cloth,knife,flashlight,
-	 				radio,gas,soap,map,gloves,family,generator,book, notebook, arrow; 
+	 				radio,gas,soap,map,gloves,family,generator,book, notebook, arrow, check, xmark; 
 	private String name;
 	private AffineTransform tx, tx2,tx3;
 	private Image glow;
@@ -44,7 +50,12 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 	double scaleWidth2 = 0.2;		
 	double scaleHeight2 = 0.2;
 	private boolean mouseOver = false;
-	private String text="Would you like to use any materials today? (Press C for Char stats)";
+	
+	public String text="Would you like to use any materials today?";
+	public String secondText = "";
+	public String thirdText = "";
+	
+	public Image option1,option2;
 	public static Player player;
 	ArrayList<Double> itemPercent;
 	ImageIcon imageIcon;
@@ -57,8 +68,11 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 	static Timer tick;
 	int sec = 3;
 	
+	Font font;
+	
 	
 	public Event(Player player) {
+		
 		
 		this.player = player;
 		
@@ -83,6 +97,11 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 		glow = getImage("/imgs/"+"glow.png");
 		notebook = getImage("/imgs/"+"notebook.png");
 		arrow = getImage("/imgs/"+"arrow.png");
+		check = getImage("/imgs/"+"checkmark.png");
+		xmark = getImage("/imgs/"+"x.png");
+		
+		option1=getImage("/imgs/"+"checkmark.png");
+		option2=getImage("/imgs/"+"xmark.png");
 		
 		width = 100;
 		height = 100;
@@ -92,22 +111,22 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 		arrowY = 480;
 		
 		//SOUP
-		itemX = 250;
+		itemX = 290;
 		itemY = 400;
 		
 		//WATER
-		item2X = 340;
+		item2X = 430;
 		item2Y = 400;
 		
 		//AID
-		item3X = 430;
+		item3X = 530;
 		item3Y = 400;
 		
-		// chance = (int) (Math.random() * randomInt);
-		chance = 0;
+		randomInt=18;
+		 //chance = (int) (Math.random() * randomInt);
+		chance = 14;
 		randomed = new Randomized(Base.inventory);
 		afterText = "♪";
-		randomInt=18;
 		
 		tx = AffineTransform.getTranslateInstance(0, 0);
 		tx2 = AffineTransform.getTranslateInstance(0, 0);
@@ -118,6 +137,24 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 		ArrayList<Double> adjustedPercentages = adjustPercentages(itemPercent, Base.disaster);
 		itemPercent = adjustedPercentages;
 		//init(x, y); 
+		
+		
+//		try {
+//		    //create the font to use. Specify the size!
+//		    Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("Fonts\\whoaskssatan.ttf")).deriveFont(12f);
+//		    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+//		    //register the font
+//		    ge.registerFont(customFont);
+//		} catch (IOException e) {
+//		    e.printStackTrace();
+//		} catch(FontFormatException e) {
+//		    e.printStackTrace();
+//		}
+		
+		Font myFont = new Font ("Courier New", 1, 20);
+		
+		
+		
 		
 	}
 
@@ -135,32 +172,35 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 		//init2(x,y);
 		g2.drawImage(notebook, 200, 0, 500,600, null);
 		g2.drawImage(arrow, arrowX, arrowY, arrow.getWidth(null), arrow.getHeight(null), null);
-		
+		g2.setFont(font);
 		
 		switch(dir) {
 			case 0:
-				g2.drawString(text, 300, 100);
+				g2.drawString("Would you like to use any materials today?", 300, 200);
 				g2.drawImage(soup, itemX, itemY, 80, 110, null);
-				g2.drawImage(water, item2X, item2Y, 80, 110, null);
+				g2.drawImage(water, item2X, item2Y, 70, 130, null);
 				g2.drawImage(aid, item3X, item3Y, 90, 90, null);
 				break;
 			case 1:
 				text = "Do you want to explore today?";
-				g2.drawString(text, 300, 100);
-				g2.drawString("Press Y for Yes!", 250, 400);
-				g2.drawString("Press N for No!", 400, 400);
-				break;
-			case 2:
-				randomize(1, chance);
-				text = randomed.getText();
 				g2.drawString(text, 300, 200);
-				g2.drawString("Press Y for Yes!", 250, 400);
-				g2.drawString("Press N for No!", 400, 400);
+				g2.drawImage(check, itemX, itemY, 80, 80, null);
+				g2.drawImage(xmark, item3X, item3Y, 80, 80, null);
 				break;
 			case 3:
+				randomize(2, chance);
+				text = randomed.getText();
+				secondText = randomed.getSecondText();
+				thirdText = randomed.getThirdText();
+				g2.drawString(text, 300, 200);
+				g2.drawString(secondText, 300, 250);
+				g2.drawString(thirdText, 300, 300);
+				g2.drawImage(option1, itemX, itemY, option1.getWidth(null), option1.getHeight(null), null);
+				g2.drawImage(option2, item3X, item3Y, option1.getWidth(null), option1.getWidth(null), null);
+				break;
+			case 2:
 				g2.drawString(afterText, 300, 200);
-				g2.drawString("Press Y for Yes!", 250, 400);
-				g2.drawString("Press N for No!", 400, 400);
+
 				break;
 		}
 
@@ -213,7 +253,6 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 	
 	
 	public void randomize(int i, int chance) {
-		i=0;
 		switch(chance) {
 			case 0:
 				randomed.savedEnding(i);
@@ -376,11 +415,15 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 		Rectangle arrowRect = new Rectangle(arrowX, arrowY, arrow.getWidth(null),arrow.getHeight(null));
 		Rectangle mRect = new Rectangle(m.getX(),m.getY(),1,1);
 		Rectangle soupRect = new Rectangle(itemX,itemY,80,110);
-		Rectangle waterRect = new Rectangle(item2X,item2Y,80,110);
+		Rectangle waterRect = new Rectangle(item2X,item2Y,70,130);
 		Rectangle aidRect = new Rectangle(item3X,item3Y,90,90);
+		Rectangle checkRect = new Rectangle(itemX,itemY,80,80);
+		Rectangle xRect = new Rectangle(item3X,item3Y,80,80);
+		Rectangle oneRect = new Rectangle(itemX,itemY,option1.getWidth(null),option2.getHeight(null));
+		Rectangle twoRect = new Rectangle(item3X,item3Y,option2.getWidth(null),option2.getHeight(null));
 		System.out.println("click");
 		if(arrowRect.intersects(mRect)) {
-			if(dir==1) {
+			if(dir==2) {
 				//chance = (int) (Math.random() * randomInt);
 			}
 			dir +=1;
@@ -389,14 +432,18 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 		//SOUP
 		Item soup = new Item();
 		soup.dir=0;
-		if(mRect.intersects(soupRect)) {
+		if(mRect.intersects(soupRect)&&dir==0&& Base.eventOpen) {
 			
 			ArrayList<Item> inventory = Base.inventory;
 			Iterator<Item> iterator = inventory.iterator();
 
+			
+			boolean foodFound = false;
+
 			while (iterator.hasNext()) {
 			    Item item = iterator.next();
 			    if (item.getName().equals("food")) {
+			        foodFound = true;
 			        if (player.getHungerScore() < 100) {
 			            statsPopup();
 			            player.setHungerScore(player.getHungerScore() + 8);
@@ -406,9 +453,15 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 			            JOptionPane.showMessageDialog(null, "You're already full!",
 			                    "Too Full!", JOptionPane.INFORMATION_MESSAGE);
 			        }
-			        break;  // Exit the loop after handling the food item
+			        break;  
 			    }
 			}
+
+			if (!foodFound) {
+			    JOptionPane.showMessageDialog(null, "No soup in your inventory!",
+			            "No Soup", JOptionPane.WARNING_MESSAGE);
+			}
+
 
 			
 		}
@@ -417,14 +470,17 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 		//WATER
 		Item water = new Item();
 		water.dir=1;
-		if(mRect.intersects(waterRect)) {
+		if(mRect.intersects(waterRect)&&dir==0) {
 			
 			ArrayList<Item> inventory = Base.inventory;
 			Iterator<Item> iterator = inventory.iterator();
 
-			while (iterator.hasNext()) {
+			
+			boolean waterFound = false;
+			while (iterator.hasNext()&& dir==0 &&Base.eventOpen) {
 			    Item item = iterator.next();
 			    if (item.getName().equals("water")) {
+			    	waterFound = true;
 			        if (player.getHungerScore() < 100) {
 			            statsPopup();
 			            player.setHungerScore(player.getHungerScore() + 8);
@@ -437,6 +493,11 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 			        break;  
 			    }
 			}
+			
+			if (!waterFound) {
+			    JOptionPane.showMessageDialog(null, "No water in your inventory!",
+			            "No Water", JOptionPane.WARNING_MESSAGE);
+			}
 
 			
 		}
@@ -446,11 +507,13 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 		//AID
 				Item aid = new Item();
 				aid.dir=2;
-				if(mRect.intersects(aidRect)) {
+				if(mRect.intersects(aidRect)&& dir==0&&Base.eventOpen) {
 					
 					ArrayList<Item> inventory = Base.inventory;
 					Iterator<Item> iterator = inventory.iterator();
 
+					
+					boolean aidFound = false;
 					while (iterator.hasNext()) {
 					    Item item = iterator.next();
 					    if (item.getName().equals("aid")) {
@@ -469,12 +532,43 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 					        break;  
 					    }
 					}
+					
+					if (!aidFound) {
+					    JOptionPane.showMessageDialog(null, "No aid in your inventory!",
+					            "No Aid", JOptionPane.WARNING_MESSAGE);
+					}
 
 					
 				}
 		
+				
+				if(dir==1) {
+					if(mRect.intersects(xRect)) {
+						dir+=1;
+					}
+					
+					if(mRect.intersects(checkRect)) {
+						showWindow();
+						dir+=1;
+					}
+				}
+				
+				
+				if (dir == 3) {
+					if(mRect.intersects(oneRect)) {
+						randomize(0, chance);
+						dir+=1;
+					}
+					
+					if(mRect.intersects(twoRect)) {
+		                randomize(1, chance);
+		                dir+=1;
+		            }
+	            } 
 		
 	}
+
+	
 
 	@Override
 	public void mousePressed(MouseEvent e) {
@@ -510,76 +604,107 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		//78-n 89-y 
-		switch(e.getKeyCode()) {
-			case 78:
-				dir+=1;
-				break;
-			case 89 :
-				if(dir==1) {
-					showWindow();
-				}else {
-					randomize(0,chance);
-				}
-				
-				
-				break;
-		}
-		
+	    int keyCode = e.getKeyCode();
+	    
+	    switch (keyCode) {
+	        case KeyEvent.VK_N:
+	            // Handle the 'N' key press
+	            dir += 1;
+	            break;
+	        case KeyEvent.VK_Y:
+	            if (dir == 1) {
+	                showWindow();
+	            }
+	            dir+=1;
+	            break;
+	        case KeyEvent.VK_1:
+	            if (dir == 3) {
+	                randomize(0, chance);
+	            } else {
+	                randomize(1, chance);
+	            }
+	            break;
+	    }
 	}
+
 	
 	
 	
-    private void showWindow() {
-        // Create the first window with a picture
-        JFrame firstWindow = new JFrame("First Window");
-        firstWindow.setSize(300, 300);
+	private void showWindow() {
+	    // Create the first window with a picture
+	    JFrame firstWindow = new JFrame("First Window");
+	    firstWindow.setSize(300, 300);
 
-        // Add a picture to the first window
-        JPanel panel = new JPanel();
-        JLabel picLabel = new JLabel(imageIcon);
-        panel.add(picLabel);
-        firstWindow.add(panel);
+	    // Add a picture to the first window
+	    JPanel panel = new JPanel();
+	    JLabel picLabel = new JLabel(imageIcon);
+	    panel.add(picLabel);
+	    firstWindow.add(panel);
 
-        // Center the window
-        firstWindow.setLocationRelativeTo(null);
-        firstWindow.setVisible(true);
+	    // Center the window
+	    firstWindow.setLocationRelativeTo(null);
+	    firstWindow.setVisible(true);
 
-        // Create an ActionListener for the timer
-        ActionListener taskPerformer = new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                // Stop the timer
-                tick.stop();
+	    // Create an ActionListener for the timer
+	    ActionListener taskPerformer = new ActionListener() {
+	        public void actionPerformed(ActionEvent evt) {
+	            // Stop the timer
+	            tick.stop();
 
-                // Close the first window
-                firstWindow.dispose();
+	            // Close the first window
+	            firstWindow.dispose();
 
-                String first = pickItem(itemPercent);
-                String second = pickItem(itemPercent);
-                String third = pickItem(itemPercent);
-                JFrame found=new JFrame("hi");
-                System.out.println(first);
-                System.out.println(second);
-                System.out.println(third);
-                if("Nothing".equals(first)&& "Nothing".equals(second)&&"Nothing".equals(third)) {
-                	found = new JFrame("Absolutely Nothing lool");
-                	System.out.println("out here in the HELPPPP HEEELLPPPPPP");
-                }
-                // Create the second window
-                JFrame secondWindow = new JFrame("Second Window");
-                secondWindow.setSize(300, 300);
-                //secondWindow.add(found);
-                secondWindow.setDefaultCloseOperation(secondWindow.DISPOSE_ON_CLOSE);
-                secondWindow.setLocationRelativeTo(null);
-                secondWindow.setVisible(true);
-            }
-        };
+	            // Pick items
+	            String first = pickItem(itemPercent);
+	            String second = pickItem(itemPercent);
+	            String third = pickItem(itemPercent);
 
-        // Create and start the timer for 3 seconds (3000 milliseconds)
-        tick = new Timer(3000, taskPerformer);
-        tick.start();
-    }
+	            // Create the second window
+	            JFrame secondWindow = new JFrame("Second Window");
+	            secondWindow.setSize(300, 300);
 
+	            // Display items if found
+	            if (!first.equals("Nothing") || !second.equals("Nothing") || !third.equals("Nothing")) {
+	                StringBuilder message = new StringBuilder("You found:");
+	                if (!first.equals("Nothing")) {
+	                    message.append(" ").append(first);
+	                }
+	                if (!second.equals("Nothing")) {
+	                    message.append(", ").append(second);
+	                }
+	                if (!third.equals("Nothing")) {
+	                    message.append(", ").append(third);
+	                }
+	                JOptionPane.showMessageDialog(secondWindow, message.toString(), "Items Found", JOptionPane.INFORMATION_MESSAGE);
+	            } else {
+	                // Display "Absolutely Nothing" if no items found
+	                JOptionPane.showMessageDialog(secondWindow, "Absolutely Nothing", "No Items Found", JOptionPane.INFORMATION_MESSAGE);
+	            }
+
+	        }
+	    };
+
+	    // Create and start the timer for 3 seconds (3000 milliseconds)
+	    tick = new Timer(3000, taskPerformer);
+	    tick.start();
+	}
+
+
+	public Image getOption1() {
+		return option1;
+	}
+
+	public void setOption1(Image option1) {
+		this.option1 = option1;
+	}
+
+	public Image getOption2() {
+		return option2;
+	}
+
+	public void setOption2(Image option2) {
+		this.option2 = option2;
+	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
