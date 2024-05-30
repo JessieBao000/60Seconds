@@ -26,10 +26,10 @@ public class Player {
 	
 	public Player() {
 		
-		normal 	= getImage("/imgs/"+"yipee.jpg"); 
-		stress 	= getImage("/imgs/"+"stress.PNG"); 
-		hunger 	= getImage("/imgs/"+"stewie.png"); 
-		hurt 	= getImage("/imgs/"+"houseattic.PNG"); 
+		normal 	= getImage("/imgs/"+"sregular.png"); 
+		stress 	= getImage("/imgs/"+"sscared.png"); 
+		hunger 	= getImage("/imgs/"+"shungry.png"); 
+		hurt 	= getImage("/imgs/"+"shurt.png"); 
 		sick 	= getImage("/imgs/"+"ashbaby.jpg"); 
 		width = 200;
 		height = 200;

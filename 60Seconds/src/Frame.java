@@ -469,7 +469,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 		    	 /*
 	             * 	OPEN NEW FRAME
 	             */
-		        Base b = new Base(dangerName,disaster, inventory);
+		        Base b = new Base(dangerName, disaster, inventory);
 
 		        f.dispose();
 		        repaint();
