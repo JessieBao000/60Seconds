@@ -12,6 +12,11 @@ public class Randomized {
 	public static int savedEnding; //ends at step 4
 	public static int catEnding; //ends at step 4
 	public static int runEnding; // ends at step 4
+	
+	public boolean savedCont;
+	public boolean catCont;
+	public boolean runCont;
+	
 	public String text,secondText,thirdText;
 	
 	public Image option1,option2;
@@ -33,6 +38,10 @@ public class Randomized {
 		afterText = "♪";
 		inventory = items;
 		player = Event.player;
+		
+		savedCont =false;
+		catCont=false;
+		runCont=false;
 		
 		option1=getImage("/imgs/"+"checkmark.png");
 		option2=getImage("/imgs/"+"xmark.png");
@@ -141,7 +150,8 @@ public class Randomized {
 				secondText ="Maybe you should go outside to find help?";
 				if(chance ==0) {
 					afterText ="You picked up a flyer for with information on when soldiers are coming by!";
-					savedEnding=1;
+					//savedEnding=1;
+					savedCont=true;
 				}
 		}else if(savedEnding ==1) {
 			text="On your paper, it says to meet in a specific location for supplies...";
@@ -151,7 +161,8 @@ public class Randomized {
 				if(checkAvailable("map")) {
 					//use map
 					afterText = "You found lots of supplies!";
-					savedEnding=2;
+					//savedEnding=2;
+					savedCont=true;
 					
 					Item food = new Item();
 					food.dir=0;
@@ -193,7 +204,8 @@ public class Randomized {
 				}
 			}else {
 				afterText = "Close enough...";
-				savedEnding=2;
+				//savedEnding=2;
+				savedCont=true;
 			}
 		}else if(savedEnding ==2) {
 			option1 = getImage("/imgs/"+"cloth.png");
@@ -204,7 +216,8 @@ public class Randomized {
 				
 				if(checkAvailable("cloth")) {
 					afterText = "♪";
-					savedEnding=3;
+					//savedEnding=3;
+					savedCont=true;
 					remove("cloth");
 				}else {
 					JOptionPane.showMessageDialog(null, "No cloth in your inventory!",
@@ -216,7 +229,8 @@ public class Randomized {
 				
 				if(checkAvailable("gloves")) {
 					afterText = "♪";
-					savedEnding=3;
+					//savedEnding=3;
+					savedCont=true;
 					remove("gloves");
 				}else {
 					JOptionPane.showMessageDialog(null, "No gloves in your inventory!",
@@ -233,7 +247,8 @@ public class Randomized {
 			text="You hear knocking on your door, should you open it?";
 			if(chance ==0) {
 				//yes
-				savedEnding=4;
+				//savedEnding=4;
+				savedCont=true;
 			}else { 
 				afterText = "♪";
 			}
@@ -253,7 +268,8 @@ public class Randomized {
 			secondText=	"Could it be a cat needing help?";
 			if(chance ==0) {
 				afterText ="You hear soft scratching in the walls now...";
-				catEnding=1;
+				//catEnding=1;
+				catCont=true;
 			}else {
 				afterText = "♪";
 			}
@@ -261,18 +277,22 @@ public class Randomized {
 			text="You noticed another cat outside...";
 			if(chance ==0) {
 				afterText = "MORE CATS";
-				catEnding=2;
+				//catEnding=2;
+				catCont=true;
 			}else {
 				afterText = "It walked in anyway...right?";
-				catEnding=2;
+				//catEnding=2;
+				catCont=true;
 			}
 		}else if(catEnding ==2) {
 			text="You see a hoard of cats outside!";
 				afterText = "My god thats a lot of cats";
-				catEnding=3;
+				//catEnding=3;
+				catCont=true;
 		}else if(catEnding ==3) {
 			text="Everything you see is cats, you aren't sure what to do...";
-			catEnding=4;
+			//catEnding=4;
+			catCont=true;
 		}else {
 			System.out.println("cat end");
 		}
@@ -287,7 +307,8 @@ public class Randomized {
 			if(chance ==0) {
 				if(checkAvailable("map")) {
 					afterText = "♪";
-					runEnding=1;
+					//runEnding=1;
+					runCont=true;
 				}else {
 					JOptionPane.showMessageDialog(null, "No map in your inventory!",
 				            "No Map", JOptionPane.WARNING_MESSAGE);
@@ -304,7 +325,8 @@ public class Randomized {
 				if(checkAvailable("generator")) {
 					afterText = "You feel a little confident";
 					player.mentalScore+=10;
-					runEnding=2;
+					//runEnding=2;
+					runCont=true;
 					remove("generator");
 				}else {
 					JOptionPane.showMessageDialog(null, "No generator in your inventory!",
@@ -317,7 +339,8 @@ public class Randomized {
 				if(checkAvailable("gas")) {
 					afterText = "You feel a little confident";
 					player.mentalScore+=10;
-					runEnding=2;
+					//runEnding=2;
+					runCont=true;
 					remove("gas");
 				}else {
 					JOptionPane.showMessageDialog(null, "No gas in your inventory!",
@@ -358,7 +381,8 @@ public class Randomized {
 			
 			
 			if(option1 ==null && option2 ==null) {
-				runEnding=3;
+				//runEnding=3;
+				runCont=true;
 			}
 		}else if(runEnding==3) {
 			text="Ready to leave?";
@@ -369,7 +393,8 @@ public class Randomized {
 				
 				if(checkAvailable("cloth")) {
 					afterText = "♪";
-					runEnding=4;
+					//runEnding=4;
+					runCont=true;
 					remove("cloth");
 				}else {
 					JOptionPane.showMessageDialog(null, "No clothes in inventory!",
@@ -385,6 +410,42 @@ public class Randomized {
 	}
 	
 	
+
+	public boolean isSavedCont() {
+		return savedCont;
+	}
+
+
+
+	public void setSavedCont(boolean savedCont) {
+		this.savedCont = savedCont;
+	}
+
+
+
+	public boolean isCatCont() {
+		return catCont;
+	}
+
+
+
+	public void setCatCont(boolean catCont) {
+		this.catCont = catCont;
+	}
+
+
+
+	public boolean isRunCont() {
+		return runCont;
+	}
+
+
+
+	public void setRunCont(boolean runCont) {
+		this.runCont = runCont;
+	}
+
+
 
 	public void robbers1(int chance) {
 		text = "You hear someone trying to sell soup and supplies to you from outside,";

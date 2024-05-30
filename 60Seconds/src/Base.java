@@ -186,10 +186,13 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
         	  }else if(event.getRandomed().getSavedEnding()==3) {
         		  event.chance=0;
         	  }
-//            int temp = event.getRandomed().getSavedEnding();
-//            Randomized rand = event.getRandomed();
-//            rand.setSavedEnding(temp + 1);
-//            event.setRandomed(rand);
+        	if(event.getRandomed().isSavedCont()) {
+	            int temp = event.getRandomed().getSavedEnding();
+	            Randomized rand = event.getRandomed();
+	            rand.setSavedEnding(temp + 1);
+	            event.setRandomed(rand);
+	            event.getRandomed().setSavedCont(false);
+        	}
         } else if (event.chance == 1) {
         	
         	if(event.getRandomed().getCatEnding()==1) {
@@ -199,10 +202,13 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
       	  }else if(event.getRandomed().getCatEnding()==3) {
       		  event.chance=1;
       	  }
-//            int temp = event.getRandomed().getCatEnding();
-//            Randomized rand = event.getRandomed();
-//            rand.setCatEnding(temp + 1);
-//            event.setRandomed(rand);
+        	if(event.getRandomed().isCatCont()) {
+	            int temp = event.getRandomed().getCatEnding();
+	            Randomized rand = event.getRandomed();
+	            rand.setCatEnding(temp + 1);
+	            event.setRandomed(rand);
+	            event.getRandomed().setCatCont(false);
+        	}
         } else if (event.chance == 2) {
         	
         	if(event.getRandomed().getRunEnding()==1) {
@@ -212,10 +218,13 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 	      	  }else if(event.getRandomed().getRunEnding()==3) {
 	      		  event.chance=2;
 	      	  }
-//            int temp = event.getRandomed().getRunEnding();
-//            Randomized rand = event.getRandomed();
-//            rand.setRunEnding(temp + 1);
-//            event.setRandomed(rand);
+        	if(event.getRandomed().isRunCont()) {
+	            int temp = event.getRandomed().getRunEnding();
+	            Randomized rand = event.getRandomed();
+	            rand.setRunEnding(temp + 1);
+	            event.setRandomed(rand);
+	            event.getRandomed().setRunCont(false);
+        	}
         }
         repaint();
         ActionListener taskPerformer = new ActionListener() {

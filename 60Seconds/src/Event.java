@@ -126,7 +126,7 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 		
 		randomInt=18;
 		 //chance = (int) (Math.random() * randomInt);
-		chance = 17;
+		chance = 1;
 		randomed = new Randomized(Base.inventory);
 		afterText = "♪";
 		
