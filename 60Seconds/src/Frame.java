@@ -63,7 +63,10 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 	public void paint(Graphics g) {
 		super.paintComponent(g);
 		map.paint(g);
-		
+		Font ml = new Font ("Courier New", 1, 17);
+		g.setFont (ml);
+		g.setColor(Color.red);
+		g.drawString("Use <--- & ---> to Switch Rooms", 30, 45);
 		//clock.paint(g);
 
 		
@@ -341,6 +344,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 		t.start();
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
+		
 	}
 	
 	public void how2Play() {
