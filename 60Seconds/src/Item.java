@@ -395,10 +395,15 @@ public class Item implements MouseListener{
             case 13:
                 name = "generator";
                 break;
+            case 14:
+            	name = "boyscoutbook";
+            	break;
             default:
                 name = null;
         }
     }
+	
+	
 	
 	public int getX() {
 		return x;

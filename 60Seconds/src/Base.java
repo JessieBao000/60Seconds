@@ -40,8 +40,10 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
     int sec = 1;
     boolean time = false;
     int sanityIncrease = 0;
+    public String name;
     
     JPanel buttonPanel;
+    private boolean isDeadWindowShown = false;
     public static ArrayList<Item> inventory = new ArrayList<Item>();
 
     @Override
@@ -61,7 +63,7 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
     public static void main(String[] arg) throws Exception {
     }
 
-    public Base(int danger, ArrayList<Item> i) {
+    public Base(String name, int danger, ArrayList<Item> i) {
         f = new JFrame("Button Example");
         f.setSize(new Dimension(900, 900));
         f.setBackground(Color.cyan);
@@ -70,6 +72,7 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 
         this.setLayout(new BorderLayout());
         
+        this.name = name;
         clownIcon = new ImageIcon("clownface.png");
 
         buttonPanel = new JPanel();
@@ -111,7 +114,7 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
         map.dir = 6;
         eventOpen = false;
 
-        event = new Event(player);
+        event = new Event(name, player);
 
         itemPercent = new ArrayList<>(Arrays.asList(10.0, 10.0, 10.0, 0.0, 8.0, 8.0, 8.0, 7.0, 5.0, 7.0, 7.0, 2.0, 8.0));
         ArrayList<Double> adjustedPercentages = adjustPercentages(itemPercent, disaster);
@@ -176,20 +179,43 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
         event.setAfterText(event.getRandomed().getAfterText());
         event.setDir(-1);
         if (event.chance == 0) {
-            int temp = event.getRandomed().getSavedEnding();
-            Randomized rand = event.getRandomed();
-            rand.setSavedEnding(temp + 1);
-            event.setRandomed(rand);
+        	  if(event.getRandomed().getSavedEnding()==1) {
+        		  event.setRandomInt(13);
+        	  }else if(event.getRandomed().getSavedEnding()==2) {
+        		  event.chance=0;
+        	  }else if(event.getRandomed().getSavedEnding()==3) {
+        		  event.chance=0;
+        	  }
+//            int temp = event.getRandomed().getSavedEnding();
+//            Randomized rand = event.getRandomed();
+//            rand.setSavedEnding(temp + 1);
+//            event.setRandomed(rand);
         } else if (event.chance == 1) {
-            int temp = event.getRandomed().getCatEnding();
-            Randomized rand = event.getRandomed();
-            rand.setCatEnding(temp + 1);
-            event.setRandomed(rand);
+        	
+        	if(event.getRandomed().getCatEnding()==1) {
+      		  event.setRandomInt(13);
+      	  }else if(event.getRandomed().getCatEnding()==2) {
+      		  event.chance=1;
+      	  }else if(event.getRandomed().getCatEnding()==3) {
+      		  event.chance=1;
+      	  }
+//            int temp = event.getRandomed().getCatEnding();
+//            Randomized rand = event.getRandomed();
+//            rand.setCatEnding(temp + 1);
+//            event.setRandomed(rand);
         } else if (event.chance == 2) {
-            int temp = event.getRandomed().getRunEnding();
-            Randomized rand = event.getRandomed();
-            rand.setRunEnding(temp + 1);
-            event.setRandomed(rand);
+        	
+        	if(event.getRandomed().getRunEnding()==1) {
+      		  event.setRandomInt(13);
+	      	  }else if(event.getRandomed().getRunEnding()==2) {
+	      		  event.chance=2;
+	      	  }else if(event.getRandomed().getRunEnding()==3) {
+	      		  event.chance=2;
+	      	  }
+//            int temp = event.getRandomed().getRunEnding();
+//            Randomized rand = event.getRandomed();
+//            rand.setRunEnding(temp + 1);
+//            event.setRandomed(rand);
         }
         repaint();
         ActionListener taskPerformer = new ActionListener() {
@@ -198,7 +224,7 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
                     System.out.println("time stop");
                     tick.stop();
                     map.setX(-1000);
-                    updateDay(8, 8, 8, 8);
+                    updateDay(5, 5, 5, 5);
                 } else {
                     System.out.println("time go");
                     dayText = "";
@@ -258,8 +284,8 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
             player.dir = 1;
         }
 
-        if (player.getHungerScore() <= 0 || player.getHealthScore() <= 0 || player.getIllScore() <= 0
-                || player.getMentalScore() <= 0) {
+        if (!isDeadWindowShown && (hun <= 0 || hurt <= 0 || ill <= 0 || mental <= 0)) {
+            isDeadWindowShown = true;
             JFrame deadFrame = new JFrame();
             deadFrame.setSize(new Dimension(500, 400));
             deadFrame.setLayout(new BorderLayout());
@@ -290,7 +316,11 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
         for (Item item : inventory) {
             inventoryList.append(item.getName()).append("\n");
         }
-        JOptionPane.showMessageDialog(null, inventoryList.toString(), "Inventory", JOptionPane.INFORMATION_MESSAGE);
+        
+        if(inventory.size()==0) {
+        	inventoryList.append("Nothing lol");
+        }
+        JOptionPane.showMessageDialog(null, "You have: "+inventoryList.toString(), "Inventory", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public void moveBack() {
@@ -319,7 +349,7 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 
     @Override
     public void mousePressed(MouseEvent m) {
-        if (event.getDir() >= 3) {
+        if (event.getDir() > 3) {
             newDay();
         }
     }
@@ -371,4 +401,6 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
     public void keyTyped(KeyEvent arg0) {
     }
 
+    
+    
 }
