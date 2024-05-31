@@ -113,52 +113,54 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
     	//Lazy x & y cords for restart button
 
     	//END Screen
-		if(map.getDir()==5) {
+    	if(map.getDir()==5) {
+			Color g1 = new Color(31,66,32);
+			Color g2 = new Color(67,122,55);
+			Color g3 = new Color	(86,191,82);
 			int i = 3;
 			//(int)Math.random()*18
 			img = getImage("/imgs/"+ "3" +".jfif");
-			g.setColor(Color.black);
+			g.setColor(g1);
 			//Integer.toString(i)
 			//Continue Button
 			//g.drawImage(img, , null );
 			g.fillRect(0,0,1000,1000);
-			g.setColor(Color.pink);
+			g.setColor(g2);
 	        g.fillRect(xx,xy,xw-75,xh);
 			Font myf = new Font ("Serif Bold Italic", 6, 30);
 			g.setFont (myf);
 			g.setColor(Color.white);
 	        g.drawString("CONTINUE?" , xx, xy+50);
-	        
-
-			g.setColor(Color.green);
+	       
+			g.setColor(g3);
 	        g.fillRect(xx,o1,xw,xh);
 			Font myf2 = new Font ("Serif Bold Italic", 6, 30);
 			g.setFont (myf2);
 			g.setColor(Color.white);
-
-	        g.drawString("RESTART GAME?" , xx, o1+50);
-
+	        g.drawString("CLOSE?" , xx, o1+50);
 	        int hung = (int) ((hunger/24.0)*100);
 	        int san = (int) ((sanity/24.0)*100);
 	        int hel = (int) ((health/24.0)*100);
 	        int saf = (int) ((saftey/24.0)*100);
-	        
-	        g.drawString("Hunger/Thirst Score: " + round(((hunger/24.0)*100),2) + "%", 30, 100);
-	        
-	        g.drawString("Saftey Score: " + round(( (saftey/49.0)*100),2)  + "%", 30, 200);
-	        
-			g.drawString("Health Score: " +round(((health/53.0)*100),2) + "%", 30, 300);
-	        g.drawString("Sanity Score: " + round(((sanity/55.0)*100),2) + "%" , 30, 400);
-	        
-	        
-	        
+	       
+	        g.drawString("Hunger/Thirst Score: " + round(((hunger/24.0)*100),2) + "%", 50, 100);
+	       
+	        g.drawString("Saftey Score: " + round(( (saftey/49.0)*100),2)  + "%", 50, 200);
+	       
+			g.drawString("Health Score: " +round(((health/53.0)*100),2) + "%", 50, 300);
+	        g.drawString("Sanity Score: " + round(((sanity/55.0)*100),2) + "%" , 50, 400);
+	       
+	       
+	       
 	        /**
 	         *  int selection = JOptionPane.showOptionDialog(null, "Food/Thirst Score: "+round(((hunger/24.0)*100),2) + "%"+"\n"+ "Saftey Score: " +round(( (saftey/49.0)*100),2)  + "%"+"\n"
-		    												+ "Health Score: " + round(((health/53.0)*100),2) + "%"+"\n"+"Sanity Score: " + round(((sanity/55.0)*100),2) + "%"+"\n" , "Times Up!", 
+		    												+ "Health Score: " + round(((health/53.0)*100),2) + "%"+"\n"+"Sanity Score: " + round(((sanity/55.0)*100),2) + "%"+"\n" , "Times Up!",
 	         */
 	        //
 //wi, he
 		}
+
+
  
 	    
 
