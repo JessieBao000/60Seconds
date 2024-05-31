@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.MediaTracker;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -42,6 +44,8 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
     int sanityIncrease = 0;
     public String name;
     
+    Image cat;
+    
     JPanel buttonPanel;
     private boolean isDeadWindowShown = false;
     public static ArrayList<Item> inventory = new ArrayList<Item>();
@@ -50,6 +54,7 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         player.paint(g);
+        g.drawImage(cat, 300, 300, 70, 70, null);
         map.paint(g);
         if (eventOpen) {
             event.paint(g);
@@ -58,6 +63,7 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
         g.setFont(myFont);
         g.setColor(Color.red);
         g.drawString(dayText, 390, 50);
+        
     }
 
     public static void main(String[] arg) throws Exception {
@@ -65,7 +71,7 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 
     public Base(String name, int danger, ArrayList<Item> i) {
         f = new JFrame("Button Example");
-        f.setSize(new Dimension(900, 900));
+        f.setSize(new Dimension(900, 700));
         f.setBackground(Color.cyan);
         f.setResizable(false);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -178,13 +184,39 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
         dayText = "";
         event.setAfterText(event.getRandomed().getAfterText());
         event.setDir(-1);
+        
+        if(day>=10 && event.getRandomed().getSavedEnding()==0&& event.getRandomed().getCatEnding()==0 &&event.getRandomed().getRunEnding()==0) {
+        	event.randomInt=10;
+        }
+        
+        
+        
         if (event.chance == 0) {
-        	  if(event.getRandomed().getSavedEnding()==1) {
-        		  event.setRandomInt(13);
-        	  }else if(event.getRandomed().getSavedEnding()==2) {
-        		  event.chance=0;
-        	  }else if(event.getRandomed().getSavedEnding()==3) {
-        		  event.chance=0;
+        	  if(event.getRandomed().getSavedEnding()==3) {
+        		  f.dispose();
+        		   
+        		  ImageIcon imageIcon = new ImageIcon();
+        		  JFrame window = new JFrame("Saved Ending");
+        		    window.setSize(300, 300);
+
+        		    JPanel panel = new JPanel();
+        		    
+        		    imageIcon = new ImageIcon(getClass().getResource("/imgs/saved.png"));
+
+        		    if(imageIcon.getImageLoadStatus() != MediaTracker.COMPLETE) {
+        		        System.out.println("Image not loaded.");
+        		    } else {
+        		        JLabel picLabel = new JLabel(imageIcon);
+        		        panel.add(picLabel);
+        		        window.add(panel);
+        		    }
+
+        		    window.setLocationRelativeTo(null);
+        		    window.setVisible(true);
+
+        		  
+        		  
+        		  
         	  }
         	if(event.getRandomed().isSavedCont()) {
 	            int temp = event.getRandomed().getSavedEnding();
@@ -195,13 +227,33 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
         	}
         } else if (event.chance == 1) {
         	
-        	if(event.getRandomed().getCatEnding()==1) {
-      		  event.setRandomInt(13);
-      	  }else if(event.getRandomed().getCatEnding()==2) {
+        	if(event.getRandomed().getCatEnding()==3) {
       		  event.chance=1;
-      	  }else if(event.getRandomed().getCatEnding()==3) {
-      		  event.chance=1;
-      	  }
+    		  f.dispose();
+    		  
+    		  ImageIcon imageIcon = new ImageIcon();
+    		  JFrame window = new JFrame("Cat Ending");
+    		    window.setSize(300, 300);
+
+    		    JPanel panel = new JPanel();
+    		    
+    		    imageIcon = new ImageIcon(getClass().getResource("/imgs/catend.png"));
+
+    		    if(imageIcon.getImageLoadStatus() != MediaTracker.COMPLETE) {
+    		        System.out.println("Image not loaded.");
+    		    } else {
+    		        JLabel picLabel = new JLabel(imageIcon);
+    		        panel.add(picLabel);
+    		        window.add(panel);
+    		    }
+
+    		    window.setLocationRelativeTo(null);
+    		    window.setVisible(true);
+
+    		  
+    		  
+    		  
+    	  }
         	if(event.getRandomed().isCatCont()) {
 	            int temp = event.getRandomed().getCatEnding();
 	            Randomized rand = event.getRandomed();
@@ -210,13 +262,33 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 	            event.getRandomed().setCatCont(false);
         	}
         } else if (event.chance == 2) {
-        	
-        	if(event.getRandomed().getRunEnding()==1) {
-      		  event.setRandomInt(13);
-	      	  }else if(event.getRandomed().getRunEnding()==2) {
+        	if(event.getRandomed().getRunEnding()==3) {
 	      		  event.chance=2;
-	      	  }else if(event.getRandomed().getRunEnding()==3) {
-	      		  event.chance=2;
+	      		  
+	      		f.dispose();
+	    		  
+	    		  ImageIcon imageIcon = new ImageIcon();
+	    		  JFrame window = new JFrame("Escape Ending");
+	    		    window.setSize(300, 300);
+
+	    		    JPanel panel = new JPanel();
+	    		    
+	    		    imageIcon = new ImageIcon(getClass().getResource("/imgs/stewieNick.png"));
+
+	    		    if(imageIcon.getImageLoadStatus() != MediaTracker.COMPLETE) {
+	    		        System.out.println("Image not loaded.");
+	    		    } else {
+	    		        JLabel picLabel = new JLabel(imageIcon);
+	    		        panel.add(picLabel);
+	    		        window.add(panel);
+	    		    }
+
+	    		    window.setLocationRelativeTo(null);
+	    		    window.setVisible(true);
+
+	    		  
+	      		  
+	      		  
 	      	  }
         	if(event.getRandomed().isRunCont()) {
 	            int temp = event.getRandomed().getRunEnding();
@@ -250,7 +322,7 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
         day += 1;
         dayText = "Day: " + day;
         if (day % 5 == 0) {
-            sanityIncrease += 3;
+            sanityIncrease += 1;
             sanity += sanityIncrease;
         }
         updateChar(hunger, health, sick, sanity);
@@ -295,17 +367,33 @@ public class Base extends JPanel implements ActionListener, MouseListener, Mouse
 
         if (!isDeadWindowShown && (hun <= 0 || hurt <= 0 || ill <= 0 || mental <= 0)) {
             isDeadWindowShown = true;
+
             JFrame deadFrame = new JFrame();
             deadFrame.setSize(new Dimension(500, 400));
-            deadFrame.setLayout(new BorderLayout());
+            deadFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            deadFrame.setLocationRelativeTo(null);
+
+            JPanel panel = new JPanel(); 
+            panel.setLayout(new BorderLayout());
 
             JLabel label = new JLabel("You died lol");
             label.setHorizontalAlignment(JLabel.CENTER);
             label.setVerticalAlignment(JLabel.CENTER);
+            label.setFont(new Font("Arial", Font.BOLD, 24));
 
-            deadFrame.getContentPane().add(label, BorderLayout.CENTER);
+            ImageIcon imageIcon = new ImageIcon(getClass().getResource("/imgs/clownface.png"));
 
-            deadFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            if (imageIcon.getImageLoadStatus() != MediaTracker.COMPLETE) {
+                System.out.println("Image not loaded.");
+            } else {
+                JLabel picLabel = new JLabel(imageIcon);
+                picLabel.setHorizontalAlignment(JLabel.CENTER);
+                picLabel.setVerticalAlignment(JLabel.CENTER);
+                panel.add(picLabel, BorderLayout.CENTER);
+            }
+
+            panel.add(label, BorderLayout.NORTH);
+            deadFrame.add(panel);
             deadFrame.setVisible(true);
 
             f.dispose();

@@ -148,15 +148,18 @@ public class Randomized {
 		if(savedEnding==0 && checkAvailable("radio")) {
 				text="You hear a government broadcast on your radio,";
 				secondText ="Maybe you should go outside to find help?";
+				thirdText = "";
 				if(chance ==0) {
-					afterText ="You picked up a flyer for with information on when soldiers are coming by!";
+					afterText ="You hear that soldiers are coming by!";
 					//savedEnding=1;
 					savedCont=true;
 				}
-		}else if(savedEnding ==1) {
-			text="On your paper, it says to meet in a specific location for supplies...";
+		}else if(savedEnding ==1&& checkAvailable("radio")) {
+			text="You hear to meet in a specific location for supplies...";
+			secondText = "";
+			thirdText = "";
 			option1 = getImage("/imgs/"+"map.png");
-			option2=null;
+			option2=getImage("/imgs/"+"xmark.png");
 			if(chance ==0) {
 				if(checkAvailable("map")) {
 					//use map
@@ -196,7 +199,7 @@ public class Randomized {
 					
 					Item gas = new Item();
 					gas.dir=0;
-					gas.setName("gas");
+					gas.setName("gasoline");
 					Base.inventory.add(gas);
 				}else {
 					JOptionPane.showMessageDialog(null, "No map in your inventory!",
@@ -207,18 +210,20 @@ public class Randomized {
 				//savedEnding=2;
 				savedCont=true;
 			}
-		}else if(savedEnding ==2) {
+		}else if(savedEnding ==2&& checkAvailable("radio")) {
 			option1 = getImage("/imgs/"+"cloth.png");
 			option2 = getImage("/imgs/"+"gloves.png");
-			text="You're thinking about decorating the outside to catch the attention of the army.";
+			text="You're thinking about decorating the outside ";
+			secondText = "to catch the attention of the army.";
+			thirdText = "";
 			if(chance ==0) {
 				//use cloth
 				
-				if(checkAvailable("cloth")) {
+				if(checkAvailable("clothing")) {
 					afterText = "♪";
 					//savedEnding=3;
 					savedCont=true;
-					remove("cloth");
+					remove("clothing");
 				}else {
 					JOptionPane.showMessageDialog(null, "No cloth in your inventory!",
 				            "No Cloth", JOptionPane.WARNING_MESSAGE);
@@ -243,8 +248,12 @@ public class Randomized {
 				//savedEnding=3;
 			}
 			
-		}else if(savedEnding ==3) {
-			text="You hear knocking on your door, should you open it?";
+		}else if(savedEnding ==3&& checkAvailable("radio")) {
+			text="You hear knocking on your door, open it?";
+			option1=getImage("/imgs/"+"checkmark.png");
+			option2=getImage("/imgs/"+"xmark.png");
+			secondText = "";
+			thirdText = "";
 			if(chance ==0) {
 				//yes
 				//savedEnding=4;
@@ -266,6 +275,7 @@ public class Randomized {
 		if(catEnding==0) {
 			text="You hear soft scratching on the basement door...";
 			secondText=	"Could it be a cat needing help?";
+			thirdText = "";
 			if(chance ==0) {
 				afterText ="You hear soft scratching in the walls now...";
 				//catEnding=1;
@@ -275,8 +285,10 @@ public class Randomized {
 			}
 		}else if(catEnding ==1) {
 			text="You noticed another cat outside...";
+			secondText = "";
+			thirdText = "";
 			if(chance ==0) {
-				afterText = "MORE CATS";
+				afterText = "MORE CATS!";
 				//catEnding=2;
 				catCont=true;
 			}else {
@@ -286,11 +298,15 @@ public class Randomized {
 			}
 		}else if(catEnding ==2) {
 			text="You see a hoard of cats outside!";
-				afterText = "My god thats a lot of cats";
+			secondText = "";
+			thirdText = "";
+				afterText = "They're living in the drywall...";
 				//catEnding=3;
 				catCont=true;
 		}else if(catEnding ==3) {
-			text="Everything you see is cats, you aren't sure what to do...";
+			text="Everything you see is cats, ";
+			secondText = "you aren't sure what to do...";
+			thirdText = "";
 			//catEnding=4;
 			catCont=true;
 		}else {
@@ -303,6 +319,7 @@ public class Randomized {
 		if(runEnding==0) {
 			text="You're bunker is feeling a little bit crowded,";
 			secondText=	"Maybe its time to find a new place to call home?";
+			thirdText = "";
 			option1=getImage("/imgs/"+"map.png");
 			if(chance ==0) {
 				if(checkAvailable("map")) {
@@ -317,6 +334,8 @@ public class Randomized {
 			afterText = "♪";
 		}else if(runEnding ==1) {
 			text="Lets start building a vehicle to travel far!";
+			secondText = "";
+			thirdText = "";
 			option1=getImage("/imgs/"+"generator.png");
 			option2=getImage("/imgs/"+"gas.png");
 			if(chance ==0) {
@@ -336,12 +355,12 @@ public class Randomized {
 				
 			}else if(chance==1) {
 				
-				if(checkAvailable("gas")) {
+				if(checkAvailable("gasoline")) {
 					afterText = "You feel a little confident";
 					player.mentalScore+=10;
 					//runEnding=2;
 					runCont=true;
-					remove("gas");
+					remove("gasoline");
 				}else {
 					JOptionPane.showMessageDialog(null, "No gas in your inventory!",
 				            "No Gas", JOptionPane.WARNING_MESSAGE);
@@ -355,7 +374,9 @@ public class Randomized {
 			}
 		}else if(runEnding ==2) {
 			text="Make sure you are stocked up!";
-			option1=getImage("/imgs/"+"soup.png");
+			secondText = "";
+			thirdText = "";
+			option1=getImage("/imgs/"+"campbell.png");
 			option2=getImage("/imgs/"+"water.png");
 			if(chance==0) {
 				
@@ -380,25 +401,38 @@ public class Randomized {
 			}
 			
 			
-			if(option1 ==null && option2 ==null) {
+			if(option1 ==null || option2 ==null) {
 				//runEnding=3;
 				runCont=true;
 			}
 		}else if(runEnding==3) {
 			text="Ready to leave?";
+			secondText = "";
+			thirdText = "";
 			option1=getImage("/imgs/"+"cloth.png");
-			option2=null;
+			option2=getImage("/imgs/"+"cat.png");
 			
 			if(chance==0) {
 				
-				if(checkAvailable("cloth")) {
+				if(checkAvailable("clothing")) {
 					afterText = "♪";
 					//runEnding=4;
 					runCont=true;
-					remove("cloth");
+					remove("clothing");
 				}else {
 					JOptionPane.showMessageDialog(null, "No clothes in inventory!",
 				            "No Cloth", JOptionPane.WARNING_MESSAGE);
+				}
+			}else if(chance==1) {
+				
+				if(checkAvailable("familyphotos")) {
+					afterText = "♪";
+					//runEnding=4;
+					runCont=true;
+					remove("familyphotos");
+				}else {
+					JOptionPane.showMessageDialog(null, "No cat pics in inventory!",
+				            "No cat pics", JOptionPane.WARNING_MESSAGE);
 				}
 			}
 			
@@ -448,9 +482,11 @@ public class Randomized {
 
 
 	public void robbers1(int chance) {
-		text = "You hear someone trying to sell soup and supplies to you from outside,";
-		secondText = "open the door?";
-		
+		text = "You hear someone trying to sell soup and supplies";
+		secondText = "to you from outside, open the door?";
+		thirdText = "";
+		option1=getImage("/imgs/"+"checkmark.png"); 
+		option2=getImage("/imgs/"+"xmark.png"); 
 		if(chance ==0) {
 			afterText = "You got robbed lol";
 			if(Base.inventory.size()>0) {
@@ -466,13 +502,17 @@ public class Randomized {
 	public void robbers2(int chance) {
 		text = "Someone's knocking on the door, saying FBI open up";
 		secondText = "open the door?";
-		
+		thirdText = "";
+		option1=getImage("/imgs/"+"checkmark.png"); 
+		option2=getImage("/imgs/"+"xmark.png"); 
 		if(chance ==0) {
 			if(Base.inventory.size()>0) {
 				Base.inventory.remove(0);
 			}else {
 				player.setHealthScore(player.getHealthScore()-10);
 			}
+			
+			afterText = "You got robbed lol";
 		}else {
 			afterText = "Congrats you're not stupid";
 		}
@@ -481,7 +521,9 @@ public class Randomized {
 	public void freeFood(int chance) {
 		text = "You remember you had some soup in the attic" ;
 		secondText="should you try to get it?";
-		
+		thirdText = "";
+		option1=getImage("/imgs/"+"checkmark.png"); 
+		option2=getImage("/imgs/"+"xmark.png"); 
 		if(chance ==0) {
 			afterText = "MORE SOUP!!!!!!";
 			Item food = new Item();
@@ -496,7 +538,9 @@ public class Randomized {
 	public void freeWater(int chance) {
 		text = "You remember you left some water near the door,";
 		secondText="should you try to get it?";
-		
+		thirdText = "";
+		option1=getImage("/imgs/"+"checkmark.png"); 
+		option2=getImage("/imgs/"+"xmark.png"); 
 		if(chance ==0) {
 			afterText = "MORE WATER!!!!!!!";
 			Item water = new Item();
@@ -511,43 +555,53 @@ public class Randomized {
 	public void freeStuff(int chance) {
 		text = "You notice a closed box in the corner,";
 		secondText="should you open it?";
+		thirdText = "";
+		option1=getImage("/imgs/"+"checkmark.png"); 
+		option2=getImage("/imgs/"+"xmark.png"); 
 		if(chance ==0) {
 			afterText = "FREE STUFF!";
-			Item food = new Item();
-			food.dir=0;
-			food.setName("food");
-			Base.inventory.add(food);
+			Item aid = new Item();
+			aid.dir=0;
+			aid.setName("firstaidkit");
+			Base.inventory.add(aid);
 		}else {
 			afterText = "♪";
 		}
 	}
-	
 	public void infestation(int chance) {
-		text = "There is an infestation of rats in your bunker, what to do?";
-		option1= getImage("/imgs/"+"knife.png");
-		option2=getImage("/imgs/"+"gas.png");
-		if(chance ==0) {
-			if(checkAvailable("knife")) {
-				afterText = "♪";
-			}
-			//picked something
-		}else if(chance==1) {
-			if(checkAvailable("gas")) {
-				afterText = "♪";
-			}
-		}
-		
-		
-		else {
-			afterText = "Crazy? I Was Crazy Once";
-			statChange = -20;
-			player.illScore-=20;
-		}
+	    text = "There is an infestation of rats, what to do?";
+	    secondText = "";
+	    thirdText = "";
+	    option1 = getImage("/imgs/" + "knife.png");
+	    option2 = getImage("/imgs/" + "xmark.png");
+
+	    if (chance == 0) {
+	        if (checkAvailable("knife")) {
+	            afterText = "♪";
+	            remove("knife");
+	        } else {
+	            JOptionPane.showMessageDialog(null, "No knife in your inventory!",
+	                    "No Knife", JOptionPane.WARNING_MESSAGE);
+	        }
+	        // picked something
+	    } else {
+	        if (!player.isIllScoreDecreased()) {
+	            int temp = player.getIllScore() - 20;
+	            player.setIllScore(temp);
+	            player.setIllScoreDecreased(true);
+	            System.out.println(player.getIllScore());
+	        }
+	        afterText = "Crazy? I Was Crazy Once";
+	    }
 	}
+
 	
 	public void scammer(int chance) {
-		text = "Someone is knocking on the door offering 100 soup cans for any free item!";
-		
+		text = "Someone is knocking on the door ";
+		secondText = "offering 100 soup cans for any free item!";
+		thirdText = "";
+		option1=getImage("/imgs/"+"checkmark.png"); 
+		option2=getImage("/imgs/"+"xmark.png"); 
 		if(chance ==0) {
 			afterText = "You got scammed lol";
 			Base.inventory.clear();
@@ -560,9 +614,10 @@ public class Randomized {
 	
 	public void redHerring(int chance) {
 		text = "There's a big commotion out on the street,";
-		secondText = "Maybe someone found help? Maybe someone is getting attack?";
-		
-		
+		secondText = "Maybe someone found help? Or getting attacked?";
+		thirdText = "";
+		option1=getImage("/imgs/"+"checkmark.png"); 
+		option2=getImage("/imgs/"+"xmark.png"); 
 		if(chance ==0) {
 			afterText = "You got beat up!";
 			statChange = -30;
@@ -575,57 +630,55 @@ public class Randomized {
 	
 	
 	public void sick(int chance) {
-		text = "You feel a little soreness in the back of your throat";
-		secondText="Its probably just the flu.";
-		option1= getImage("/imgs/"+"aid.png");
-		option2=getImage("/imgs/"+"soap.png");
-		if(chance ==0) {
-			
-			
-			if(checkAvailable("firstaidkit")) {
-				afterText = "You feel a lot better!";
-				statChange = 20;
-				player.illScore+=20;
-				
-				remove("firstaidkit");
-			}else {
-				JOptionPane.showMessageDialog(null, "No aid in your inventory!",
-			            "No Aid", JOptionPane.WARNING_MESSAGE);
-			}
-			
-			
-		}else if(chance==1) {
-			
-			if(checkAvailable("soap")) {
-				afterText = "You feel a lot better!";
-				statChange = 20;
-				player.illScore+=20;
-				
-				remove("soap");
-			}else {
-				JOptionPane.showMessageDialog(null, "No soap in your inventory!",
-			            "No Soap", JOptionPane.WARNING_MESSAGE);
-			}
-			
-			
-		}else {
-			
-			afterText = "*Cough Cough*";
-			statChange = -10;
-			player.illScore-=10;
-		}
-		
-		//first aid kit
-		//soap
-		
-		
+	    text = "You feel a little soreness in your throat";
+	    secondText = "It's probably just the flu.";
+	    thirdText = "";
+	    option1 = getImage("/imgs/" + "aid.png");
+	    option2 = getImage("/imgs/" + "soap.png");
+	    
+	    if (chance == 0) {
+	        if (checkAvailable("firstaidkit")) {
+	            afterText = "You feel a lot better!";
+	            statChange = 20;
+	            player.illScore += 20;
+	            player.setIllScoreDecreased(false);  // Reset the flag
+	            remove("firstaidkit");
+	        } else {
+	            JOptionPane.showMessageDialog(null, "No aid in your inventory!",
+	                    "No Aid", JOptionPane.WARNING_MESSAGE);
+	        }
+	    } else if (chance == 1) {
+	        if (checkAvailable("soap")) {
+	            afterText = "You feel a lot better!";
+	            statChange = 20;
+	            player.illScore += 20;
+	            player.setIllScoreDecreased(false);  // Reset the flag
+	            remove("soap");
+	        } else {
+	            JOptionPane.showMessageDialog(null, "No soap in your inventory!",
+	                    "No Soap", JOptionPane.WARNING_MESSAGE);
+	        }
+	    } else {
+	        if (!player.isIllScoreDecreased()) {
+	            afterText = "*Cough Cough*";
+	            statChange = -10;
+	            player.setIllScore(player.getIllScore() - 10);
+	            player.setIllScoreDecreased(true);  // Set the flag
+	        } else {
+	            afterText = "*Cough Cough*";
+	            statChange = 0;  
+	        }
+	    }
 	}
+
 	
 	
 	public void wounded(int chance){
 		text = "You found a pretty bad gash on your back";
 		secondText = "what should you do?";
+		thirdText = "";
 		option1=getImage("/imgs/"+"aid.png"); 
+		option2=getImage("/imgs/"+"xmark.png"); 
 		if(chance ==0) {
 			
 			if(checkAvailable("firstaidkit")) {
@@ -640,18 +693,27 @@ public class Randomized {
 			}
 			
 		}else {
-			afterText = "♪";
-			statChange = -10;
-			player.healthScore-=10;
+			
+			if (!player.isHealthScoreDecreased()) {
+				afterText = "Fine, right...";
+				statChange = -10;
+	            player.setHealthScore(player.getHealthScore() - 10);
+	            player.setHealthScoreDecreased(true);  
+	        } else {
+	        	afterText = "Fine, right...";
+	            statChange = 0;  
+	        }
 		}
 		
 		//first aid
 	}
 
 	public void blackHole(int chance ) {
-		text = "You've noticed an opening in the back of the shelter";
+		text = "You've noticed an opening in the back";
 		secondText="You think it's calling for your name!";
 		thirdText ="Reach for it?";
+		option1=getImage("/imgs/"+"checkmark.png"); 
+		option2=getImage("/imgs/"+"xmark.png"); 
 		if(chance ==0) {
 			afterText = "OWWWWWWWWWWWWWWWWWWWWWWWWWW! You've been hurt significantly!";
 			statChange = -30;
@@ -664,9 +726,11 @@ public class Randomized {
 	
 	
 	public void lootNeighbor(int chance) {
-		text = "You remember that your neighbor had spare soups in his kitchen,";
+		text = "You remember that your neighbor had soups,";
 		secondText ="Sharing is caring, right?";
-		//option2=null;
+		thirdText = "";
+		option1=getImage("/imgs/"+"checkmark.png"); 
+		option2=getImage("/imgs/"+"xmark.png"); 
 		if(chance ==0) {
 			
 			int random = (int)(Math.random())*2;
@@ -695,8 +759,9 @@ public class Randomized {
 	}
 	
 	public void sanityHelp(int chance){
-		text = "You've been spending your past time starring at concrete walls.";
-		secondText = "Maybe its time to do something interesting with your boring life...";
+		text = "You've been spending your past time starring at walls.";
+		secondText = "Maybe its time to do something interesting...";
+		thirdText = "";
 		option1 = getImage("/imgs/"+"book.png"); 
 		option2 = getImage("/imgs/"+"knife.png"); 
 		if(chance ==0) {
@@ -731,27 +796,34 @@ public class Randomized {
 	
 
 	public void nothing1(){
-		text = "You're getting used to bunker life, but you really miss your dog, Peanuts.";
+		text = "You really miss your dog, Peanuts.";
 		secondText = "Maybe he'll come back...";
+		thirdText = "";
 		afterText = "♪";
-		option1 = null;
-		option2 = null;
+
+		option1=getImage("/imgs/"+"checkmark.png"); 
+		option2=getImage("/imgs/"+"xmark.png"); 
 		
 	}
 	
 	public void nothing2(){
 		text = "How much wood could a woodchuck chuck, ";
 		secondText ="if a woodchuck could chuck wood.";
+		thirdText = "";
 		afterText = "♪";
-		option1 = null;
-		option2 = null;
+
+		option1=getImage("/imgs/"+"checkmark.png"); 
+		option2=getImage("/imgs/"+"xmark.png"); 
 	}
 	
 	public void nothing3(){
 		text = "Do you hear that too?";
+		secondText = "";
+		thirdText = "";
 		afterText = "♪";
-		option1 = null;
-		option2 = null;
+
+		option1=getImage("/imgs/"+"checkmark.png"); 
+		option2=getImage("/imgs/"+"xmark.png"); 
 	}
 	
 	

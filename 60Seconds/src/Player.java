@@ -10,7 +10,7 @@ import java.net.URL;
 
 public class Player {
 
-	private Image normal, stress, hunger, hurt, sick; 
+	private Image normal, stress, hunger, hurt, sick,base; 
 	private AffineTransform tx, tx2;
 	
 	public int dir=0;
@@ -22,6 +22,26 @@ public class Player {
 	double scaleWidth2 = 0.6;		
 	double scaleHeight2 = 0.6;
 	
+	private boolean isIllScoreDecreased = false;
+	private boolean isHealthScoreDecreased = false;
+	
+	
+	public boolean isHealthScoreDecreased() {
+		return isHealthScoreDecreased;
+	}
+
+	public void setHealthScoreDecreased(boolean isHealthScoreDecreased) {
+		this.isHealthScoreDecreased = isHealthScoreDecreased;
+	}
+
+	public boolean isIllScoreDecreased() {
+		return isIllScoreDecreased;
+	}
+
+	public void setIllScoreDecreased(boolean isIllScoreDecreased) {
+		this.isIllScoreDecreased = isIllScoreDecreased;
+	}
+
 	int hungerScore, mentalScore, healthScore, illScore;
 	
 	public Player() {
@@ -31,10 +51,11 @@ public class Player {
 		hunger 	= getImage("/imgs/"+"shungry.png"); 
 		hurt 	= getImage("/imgs/"+"shurt.png"); 
 		sick 	= getImage("/imgs/"+"ashbaby.jpg"); 
+		base = getImage("/imgs/"+"basement.jpg"); 
 		width = 200;
 		height = 200;
-		x = 0;
-		y = 0;
+		x = 400;
+		y = 300;
 		
 		tx = AffineTransform.getTranslateInstance(0, 0);
 		tx2 = AffineTransform.getTranslateInstance(0, 0);
@@ -51,7 +72,7 @@ public class Player {
 		//these are the 2 lines of code needed draw an image on the screen
 		Graphics2D g2 = (Graphics2D) g;
 
-		g.drawRect(x, y, width, height);
+		//g.drawRect(x, y, width, height);
 		
 		if(hungerScore>100) {
 			hungerScore=100;
@@ -68,6 +89,8 @@ public class Player {
 		if(illScore>100) {
 			illScore=100;
 		}
+		
+		g2.drawImage(base, 0, 0, 900, 700, null);
 
 		switch(dir) {
 			case 0:

@@ -53,7 +53,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 	ArrayList<Item> inventory = new ArrayList<Item>();
 	String inventoryString = "Inventory: 0/10";
 	static Timer tick;
-	static int sec = 10;
+	static int sec = 60;
 	int xx = 600,xy= 100,xw = 250,xh= 80; //restart button vals
 	int o1 =300;
 	//scores
@@ -67,6 +67,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 		g.setFont (ml);
 		g.setColor(Color.red);
 		g.drawString("Use <--- & ---> to Switch Rooms", 30, 45);
+		g.drawString("Press C to Continue ot Next Stage", 30, 65);
 		//clock.paint(g);
 
 		
@@ -464,8 +465,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 	public void basePopup() {
         
 		 String[] options = { "Okay" };
-		    int selection = JOptionPane.showOptionDialog(null, "Food/Thirst Score: "+round(((hunger/24.0)*100),2) + "%"+"\n"+ "Saftey Score: " +round(( (saftey/49.0)*100),2)  + "%"+"\n"
-		    												+ "Health Score: " + round(((health/53.0)*100),2) + "%"+"\n"+"Sanity Score: " + round(((sanity/55.0)*100),2) + "%"+"\n" , "Times Up!", 
+		    int selection = JOptionPane.showOptionDialog(null, "Click on the notebook with the arrow to look through events!"+"\n" + "Make sure you watch your stats!", "Times Up!", 
 		                                                      0, 1, null, options, options[0]);
 		    
 		    
@@ -478,7 +478,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 		        f.dispose();
 		        repaint();
 
-		    }
+		    } 
 			
     }
 	
@@ -620,6 +620,10 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 					map.dir = map.getDir()+1;
 				}
 				
+				break;
+				
+			case 67 :
+				sec = 2;
 				break;
 				
 		}

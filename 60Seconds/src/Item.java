@@ -255,7 +255,7 @@ public class Item implements MouseListener{
 					name = "familyphotos";
 				}
 				break;
-			case 13: //GENERATOR
+			case 13: //GENERATOR 
 				if(x!=1000) {
 					x = 600;
 					y = 400;

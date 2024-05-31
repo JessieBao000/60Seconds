@@ -87,10 +87,10 @@ public class Map {
 
 				break;
 			case 6:
-				
+				 
 				initn(x, y); 
 				g2.drawImage(black, txn, null);
-				g.drawRect(x, y, width, height);
+				g.drawRect(x, y, width, 700);
 				break;
 				
 		}
