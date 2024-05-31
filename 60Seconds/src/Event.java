@@ -186,6 +186,9 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 		g2.setFont(font);
 		
 		switch(dir) {
+			case -1:
+				g2.drawString("Press the arrow to continue", 300, 200);
+				break;
 			case 0:
 				g2.drawString("Would you like to use any materials today?", 320, 200);
 				g2.drawImage(soup, itemX, itemY, 80, 110, null);
@@ -216,6 +219,7 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 				break;
 			case 4:
 				g2.drawString("Press the arrow to continue", 300, 200);
+				break;
 		}
 
 		//g2.drawRect(x, y, width, height)
@@ -515,14 +519,14 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 		//WATER
 		Item water = new Item();
 		water.dir=1;
-		if(mRect.intersects(waterRect)&&dir==0) {
+		if(mRect.intersects(waterRect)&&dir==0&& Base.eventOpen) {
 			
 			ArrayList<Item> inventory = Base.inventory;
 			Iterator<Item> iterator = inventory.iterator();
 
 			
 			boolean waterFound = false;
-			while (iterator.hasNext()&& dir==0 &&Base.eventOpen) {
+			while (iterator.hasNext()) {
 			    Item item = iterator.next();
 			    if (item.getName().equals("water")) {
 			    	waterFound = true;
@@ -562,6 +566,7 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 					while (iterator.hasNext()) {
 					    Item item = iterator.next();
 					    if (item.getName().equals("firstaidkit")) {
+					    	aidFound=true;
 					        if (player.getHealthScore() < 100) {
 					            statsPopup();
 					            player.setHungerScore(player.getHealthScore() + 8);
