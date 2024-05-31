@@ -265,6 +265,8 @@ public class Randomized {
 			System.out.println("save end");
 		}else {
 			text = "Do you hear that too?";
+			secondText = "";
+			thirdText = "";
 			afterText = "♪";
 			option1 = null;
 			option2 = null;
@@ -715,7 +717,7 @@ public class Randomized {
 		option1=getImage("/imgs/"+"checkmark.png"); 
 		option2=getImage("/imgs/"+"xmark.png"); 
 		if(chance ==0) {
-			afterText = "OWWWWWWWWWWWWWWWWWWWWWWWWWW! You've been hurt significantly!";
+			afterText = "OWWWWW! You've been hurt!";
 			statChange = -30;
 			player.healthScore-=30;
 			player.illScore-=30;

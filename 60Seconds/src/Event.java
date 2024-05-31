@@ -325,8 +325,8 @@ public class Event implements MouseListener, KeyListener,Icon, Serializable, Acc
 		}
 		
 		if (option1 == null && option2 == null) {
-            option1=null;
-            option2=null;
+			option1=getImage("/imgs/"+"checkmark.png");
+			option2=getImage("/imgs/"+"xmark.png");
             System.out.println("all null");
             ///repaint();
         } else {
